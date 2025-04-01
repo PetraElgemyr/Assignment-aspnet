@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class InitializeWithDataBusiness : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -65,6 +65,32 @@ namespace Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clients", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NotificationTargets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TargetName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NotificationTargets", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NotificationTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TypeName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NotificationTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,6 +213,34 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NotificationTypeId = table.Column<int>(type: "int", nullable: false),
+                    NotificationTargetId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notifications_NotificationTargets_NotificationTargetId",
+                        column: x => x.NotificationTargetId,
+                        principalTable: "NotificationTargets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Notifications_NotificationTypes_NotificationTypeId",
+                        column: x => x.NotificationTypeId,
+                        principalTable: "NotificationTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
@@ -221,6 +275,32 @@ namespace Data.Migrations
                         name: "FK_Projects_Statuses_StatusId",
                         column: x => x.StatusId,
                         principalTable: "Statuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserDismissedNotifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NotificationId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserDismissedNotifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserDismissedNotifications_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserDismissedNotifications_Notifications_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notifications",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -265,6 +345,16 @@ namespace Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Notifications_NotificationTargetId",
+                table: "Notifications",
+                column: "NotificationTargetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_NotificationTypeId",
+                table: "Notifications",
+                column: "NotificationTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Projects_ClientId",
                 table: "Projects",
                 column: "ClientId");
@@ -277,6 +367,16 @@ namespace Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_UserId",
                 table: "Projects",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserDismissedNotifications_NotificationId",
+                table: "UserDismissedNotifications",
+                column: "NotificationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserDismissedNotifications_UserId",
+                table: "UserDismissedNotifications",
                 column: "UserId");
         }
 
@@ -302,16 +402,28 @@ namespace Data.Migrations
                 name: "Projects");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "UserDismissedNotifications");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Clients");
 
             migrationBuilder.DropTable(
                 name: "Statuses");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
+
+            migrationBuilder.DropTable(
+                name: "NotificationTargets");
+
+            migrationBuilder.DropTable(
+                name: "NotificationTypes");
         }
     }
 }

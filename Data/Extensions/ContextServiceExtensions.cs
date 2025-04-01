@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Data;
+namespace Data.Extensions;
 
 public static class ContextServiceExtensions
 {

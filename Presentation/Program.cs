@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Rewrite;
-using Data;
 using Business;
 using Hubs;
+using Data.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
@@ -21,6 +21,10 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+
+app.UseDefaultRoles();
+app.UseDefaultAdminAccount();
 
 app.MapStaticAssets();
 

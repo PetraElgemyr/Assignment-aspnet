@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Data;
+namespace Data.Extensions;
 
 public static class RepositoryExtensions
 {
