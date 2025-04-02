@@ -26,11 +26,12 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
             return new ProjectResult { Succeeded = false, StatusCode = 400, Error = "Invalid form data provided." };
 
         var projectEntity = formData.MapTo<ProjectEntity>();
+        // TODO kolla om client, user och statusid finns
 
-        var statusResult = await _statusService.GetStatusByIdAsync(1);
-        var status = statusResult.Result;
-
-        projectEntity.StatusId = status!.Id;
+        // TODO fixa statusid från formdata
+        //var statusResult = await _statusService.GetStatusByIdAsync(1);
+        //var status = statusResult.Result;
+        //projectEntity.StatusId = status!.Id;
         var result = await _projectRepository.AddAsync(projectEntity);
 
         return result.Succeeded ?
@@ -72,8 +73,35 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
 
 
     // TODO update project
+    public async Task<ProjectResult> UpdateProjectAsync(UpdateProjectFormData formData)
+    {
+        if (formData == null)
+            return new ProjectResult { Succeeded = false, StatusCode = 400, Error = "Invalid form data provided." };
+
+        var updatedProjectEntity = formData.MapTo<ProjectEntity>();
+        // TODO kolla om client, user och statusid finns
 
 
+        var result = await _projectRepository.UpdateAsync(updatedProjectEntity);
 
-    // TODO delete project
+        return result.Succeeded ?
+            new ProjectResult { Succeeded = true, StatusCode = 201 }
+            : new ProjectResult { Succeeded = false, StatusCode = result.StatusCode, Error = result.Error };
+    }
+
+// TODO delete project
+    public async Task<ProjectResult> DeleteProjectByIdAsync(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+            return new ProjectResult { Succeeded = false, StatusCode = 400, Error = "Invalid id provided." };
+
+        var result = await _projectRepository.DeleteAsync(x => x.Id == id);
+
+        return result.Succeeded ?
+            new ProjectResult { Succeeded = true, StatusCode = 200 }
+            : new ProjectResult { Succeeded = false, StatusCode = result.StatusCode, Error = result.Error };
+    }
+
+
+    
 }
