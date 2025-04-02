@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu()
     initModals()
     initializeDropdowns();
-
     updateRelativeTimes();
     setInterval(updateRelativeTimes, 6000)
 })
@@ -27,7 +26,6 @@ function initModals() {
         button.addEventListener('click', () => {
             const target = button.getAttribute('data-target')
             const targetElement = document.querySelector(target)
-            console.log('d')
             targetElement.classList.add('show')
         })
     })
@@ -41,10 +39,37 @@ function initCloseButtons() {
             const targetElement = document.querySelector(target)
 
             targetElement.classList.remove('show')
+            if (targetElement) {
+                if (targetElement.classList.contains('modal')) {
+                    closeModal(targetElement)
+                }
+            }
         })
     })
 }
 
+
+function clearFormErrorMessages(form) {
+    form.querySelectorAll('[data-val="true"]').forEach(input => {
+        input.classList.remove('input-validation-error')
+    })
+
+    form.querySelectorAll('[data-valmsg-for]').forEach(span => {
+        span.innerText = ''
+        span.classList.remove('field-validation-error')
+    })
+}
+
+function closeModal(modal) {
+    if (modal) {
+        modal.classList.remove('show')
+
+        modal.querySelectorAll('form').forEach(form => {
+            form.reset()
+            clearFormErrorMessages(form);
+        })
+    }
+}
 
 function removeSidebarShowOnResize() {
     const sidebar = document.getElementById('sidebar')
@@ -52,9 +77,6 @@ function removeSidebarShowOnResize() {
         sidebar.classList.remove('show')
     }
 }
-
-
-
 
 
 function initializeDropdowns() {

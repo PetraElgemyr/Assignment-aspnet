@@ -8,7 +8,11 @@
             <button data-type="close" data-target="#addClientModal" type="button" class="btn-close"></button>
         </header>
         <div class="modal-body">
-            <form novalidate method="post" asp-action="Add" asp-controller="Clients">
+            <form id="clientForm" novalidate method="post" asp-action="AddClient" asp-controller="Clients" enctype="multipart/form-data">
+
+
+
+
                 <div class="form-group">
                     <label asp-for="ClientName"></label>
                     <div class="field-group">
@@ -23,3 +27,4 @@
 
     </div>
 </div>
+
