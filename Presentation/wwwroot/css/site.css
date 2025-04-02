@@ -61,7 +61,7 @@
     --text-extra-muted-color: var(--gray-600);
     --text-headline-color: var(--dark-100);
     --background-color: var(--white-200);
-    --modal-background-color: var(--dark-opacity-20);
+    --modal-background-color: var(--white-100);
     --orseperator-background-color: var(--white-100);
     /* Knappar */
     --btn-text-color: var(--white-100);
@@ -125,6 +125,9 @@
     --dot-red-background-color: var(--red);
     --dot-yellow-background-color: var(--yellow);
     --dot-green-background-color: var(--green);
+    /* modals */
+    --modal-screen-background-color: #7070703b;
+    /*    --modal-background-color: var(--white-100);*/
 }
 
 [data-mode="dark"] {
@@ -205,6 +208,17 @@ html, body {
 /* ============================= */
 /*           Layout              */
 /* ============================= */
+
+
+/*.hide {
+    display: none !important;
+}
+
+.flex {
+    display: flex !important;
+}*/
+
+
 .backoffice-wrapper {
     display: grid;
     grid-template-columns: 1fr;
@@ -332,10 +346,9 @@ main {
 aside {
     grid-area: aside;
     position: fixed;
-    background-color: var(--dark-400);
+    background-color: var(--background-color);
     padding: 1.5rem 1.5rem;
     opacity: 0;
-    z-index: 500;
 }
 
 @media (min-width: 1200px) {
@@ -357,7 +370,8 @@ aside.show {
 }
 
     aside.show .nav-link {
-        color: var(--white-100);
+        /*        color: var(--white-100);*/
+        color: var(--navlink-text-color);
     }
 
         aside.show .nav-link:hover {
@@ -373,7 +387,7 @@ aside .logotype {
 aside .btn-close {
     display: flex;
     justify-self: flex-end;
-    color: var(--white-100);
+    color: var(--navlink-text-color);
     font-size: 1.3em;
 }
 
@@ -633,6 +647,9 @@ a {
         text-decoration: underline;
     }
 
+
+
+
 /* ============================= */
 /*            Form           */
 /* ============================= */
@@ -874,24 +891,47 @@ form {
 /*           Modal             */
 /* ============================= */
 .modal {
-    background-color: var(--modal-background-color);
+    display: none;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    display: none;
-    justify-content: center;
-    align-items: center;
 }
+
+
+    .modal > .modal-content {
+        background-color: var(--white-200);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 3px 4px 1px rgba(0,0,0,0.1);
+        width: 90%;
+    }
+
+        .modal > .modal-content header,
+        .modal > .modal-content .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
 
     .modal.show {
         display: flex;
+        background-color: var(--modal-screen-background-color)
     }
 
-#addClientModal .card {
+#addClientModal .modal-content {
     width: 550px;
 }
+
+
+
+
+
 
 /* ============================= */
 /*   Dark Mode-toggle (exempel)  */

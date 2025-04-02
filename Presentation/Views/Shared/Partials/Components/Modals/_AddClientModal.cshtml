@@ -1,0 +1,25 @@
+﻿@model AddClientViewModel
+
+
+<div id="addClientModal" class="modal">
+    <div class="modal-content">
+        <header class="modal-header">
+            <h3>Add Client</h3>
+            <button data-type="close" data-target="#addClientModal" type="button" class="btn-close"></button>
+        </header>
+        <div class="modal-body">
+            <form novalidate method="post" asp-action="Add" asp-controller="Clients">
+                <div class="form-group">
+                    <label asp-for="ClientName"></label>
+                    <div class="field-group">
+                        <input asp-for="ClientName" />
+                        <span asp-validation-for="ClientName"></span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-blue btn-submit">Create</button>
+
+            </form>
+        </div>
+
+    </div>
+</div>
