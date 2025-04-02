@@ -9,7 +9,7 @@ namespace Business.Services;
 public interface IAuthService
 {
     Task<AuthResult> SignInAsync(SignInFormData formData);
-    Task SignOutAsync();
+    Task<AuthResult> SignOutAsync();
     Task<AuthResult> SignUpAsync(SignUpFormData formData);
 }
 
@@ -29,44 +29,28 @@ public class AuthService(SignInManager<UserEntity> signInManager, UserManager<Us
         if (userResult.Succeeded)
             return new AuthResult { Succeeded = false, StatusCode = 409, Error = userResult.Error };
 
-        try
-        {
-            var userEntity = formData.MapTo<UserEntity>();
-            userEntity.UserName = userEntity.Email;
+        var result = await _userService.CreateUserAsync(formData);
 
-            var identityResult = await _userManager.CreateAsync(userEntity, formData.Password);
-            if (identityResult.Succeeded)
-            {
-                if (formData.RoleName != null)
-                {
-                    var result = await _userService.AddUserToRoleAsync(userEntity, formData.RoleName);
-                }
+        return result.Succeeded ?
+            new AuthResult { Succeeded = true, StatusCode = 201 }  : 
+            new AuthResult { Succeeded = false, StatusCode = result.StatusCode, Error = result.Error };
 
-                return new AuthResult { Succeeded = true, StatusCode = 201, SuccessMessage = $"User was created successfully." };
-            }
-
-            throw new Exception("Unable to sign up user");
-
-        }
-        catch (Exception ex)
-        {
-            return new AuthResult { Succeeded = false, StatusCode = 500, Error = ex.Message };
-        }
     }
 
     public async Task<AuthResult> SignInAsync(SignInFormData formData)
     {
         if (formData == null)
-            return new AuthResult { Succeeded = false, StatusCode = 400, Error = "form data can't be null." };
+            return new AuthResult { Succeeded = false, StatusCode = 400, Error = "Not all required fields was provided." };
 
         var signInResult = await _signInManager.PasswordSignInAsync(formData.Email, formData.Password, formData.IsPersistent, false);
         return signInResult.Succeeded
             ? new AuthResult { Succeeded = true, StatusCode = 200 }
-            : new AuthResult { Succeeded = false, StatusCode = 401 };
+            : new AuthResult { Succeeded = false, StatusCode = 401, Error = "Invalid email or password." };
     }
 
-    public async Task SignOutAsync()
+    public async Task<AuthResult> SignOutAsync()
     {
         await _signInManager.SignOutAsync();
+        return new AuthResult { Succeeded = true, StatusCode = 200 };
     }
 }

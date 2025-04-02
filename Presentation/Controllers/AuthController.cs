@@ -4,7 +4,6 @@ using Domain.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace Presentation.Controllers;
 
@@ -28,13 +27,14 @@ public class AuthController(IAuthService authService, INotificationService notif
     [Route("auth/signup")]
     public async Task<IActionResult> SignUp(SignUpViewModel model, string returnUrl = "~/")
     {
+        ViewBag.ErrorMessage = null;
+
         if (!ModelState.IsValid)
         {
             ViewBag.ReturnUrl = returnUrl;
             ViewBag.ErrorMessage = "";
             return View(model);
         }
-
         var signUpFormData = model.MapTo<SignUpFormData>();
         var authResult = await _authService.SignUpAsync(signUpFormData);
 
@@ -62,44 +62,48 @@ public class AuthController(IAuthService authService, INotificationService notif
     [Route("auth/login")]
     public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = "~/")
     {
-        if (ModelState.IsValid)
+        ViewBag.ReturnUrl = returnUrl;
+        ViewBag.ErrorMessage = null;
+
+        if (!ModelState.IsValid)
         {
-            var signInFormData = model.MapTo<SignInFormData>();
-            var authResult = await _authService.SignInAsync(signInFormData);
-
-            if (authResult.Succeeded)
-            {
-
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var userResult = await _userService.GetUserByIdAsync(userId!);
-                var user = userResult.Result;
-
-                if (user != null)
-                {
-
-                    var notificationFormData = new NotificationFormData
-                    {
-                        NotificationTypeId = 1,
-                        NotificationTargetId = 1, //här kan man hämta vilket id som är för admin eller ej ist för att hårdkoda 1
-                        Message = $"{user.FirstName} {user.LastName} signed in",
-                        Image = user.Image
-                    };
-                    await _notificationService.AddNotificationAsync(notificationFormData);
-                }
-
-                return LocalRedirect(returnUrl);
-            }
+            return View(model);
         }
 
-        ViewBag.ReturnUrl = returnUrl;
-        ViewBag.ErrorMessage = "Unable to login. Try another email or password.";
+        var signInFormData = model.MapTo<SignInFormData>();
+        var authResult = await _authService.SignInAsync(signInFormData);
+
+        if (authResult.Succeeded)
+        {
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userResult = await _userService.GetUserByIdAsync(userId!);
+            var user = userResult.Result;
+
+            if (user != null)
+            {
+
+                var notificationFormData = new NotificationFormData
+                {
+                    NotificationTypeId = 1,
+                    NotificationTargetId = 1, //här kan man hämta vilket id som är för admin eller ej ist för att hårdkoda 1
+                    Message = $"{user.FirstName} {user.LastName} signed in",
+                    Image = user.Image
+                };
+                await _notificationService.AddNotificationAsync(notificationFormData);
+            }
+
+            return LocalRedirect(returnUrl);
+        }
+
+        ViewBag.ErrorMessage = authResult.Error ;
         return View(model);
     }
 
     [Route("auth/logout")]
     public async Task<IActionResult> Logout()
     {
-        await _authService.SignOutAsync();
+       var result = await _authService.SignOutAsync();
         return LocalRedirect("~/");
     }
 }

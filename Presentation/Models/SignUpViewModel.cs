@@ -17,8 +17,9 @@ public class SignUpViewModel
 
 
     [Required(ErrorMessage = "is required.")]
-    [DataType(DataType.EmailAddress)]
+    [RegularExpression(@"^[^@\s]+@[^\s]+\.[^@\s]+$", ErrorMessage = "Invalid email")]
     [Display(Name = "Email", Prompt = "Enter email address")]
+    [DataType(DataType.EmailAddress)]
     public string Email { get; set; } = null!;
 
 
@@ -33,4 +34,7 @@ public class SignUpViewModel
     [DataType(DataType.Password)]
     [Display(Name = "Confirm Password", Prompt = "Confirm password")]
     public string ConfirmPassword { get; set; } = null!;
+
+
+    public bool TermsAndConditions { get; set; } 
 }

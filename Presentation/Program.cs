@@ -22,7 +22,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
 app.UseDefaultRoles();
 app.UseDefaultAdminAccount();
 

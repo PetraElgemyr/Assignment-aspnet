@@ -7,7 +7,7 @@ namespace Data.Extensions;
 
 public static class ApplicationDefaultAdminUserExtensions
 {
-    public static IApplicationBuilder UseDefaultAdminAccount(this IApplicationBuilder app, string email = "admin@domain.com", string password = "Bytmig123!", string firstName = "System", string lastName = "Administrator", string role = "Admin")
+    public static IApplicationBuilder UseDefaultAdminAccount(this IApplicationBuilder app, string email = "admin@domain.com", string password = "BytMig123!", string firstName = "System", string lastName = "Administrator", string role = "Admin")
     {
         return app.UseMiddleware<DefaultAdminAccountMiddleware>(email, password, firstName, lastName, role);
     }
@@ -15,7 +15,7 @@ public static class ApplicationDefaultAdminUserExtensions
 
 
 
-public class DefaultAdminAccountMiddleware(RequestDelegate next, string email, string password, string firstName, string lastName, string role)
+public class DefaultAdminAccountMiddleware(RequestDelegate next, string email, string password, string firstName, string lastName, string role/* string image, string jobTitle*/)
 {
     private readonly RequestDelegate _next = next;
     private readonly string _email = email;
@@ -36,6 +36,7 @@ public class DefaultAdminAccountMiddleware(RequestDelegate next, string email, s
                 FirstName = _firstName,
                 LastName = _lastName,
                 Email = _email,
+
             };
 
             var result = await userManager.CreateAsync(adminUser, _password);
