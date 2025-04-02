@@ -8,6 +8,7 @@ namespace Business.Services;
 public interface IStatusService
 {
     Task<StatusResult<Status>> GetStatusByIdAsync(int id);
+    Task<StatusResult<Status>> GetStatusByNamedAsync(string statusName);
     Task<StatusResult<IEnumerable<Status>>> GetStatusesAsync();
 }
 
@@ -22,20 +23,31 @@ public class StatusService(IStatusRepository statusRepository) : IStatusService
                 orderByDescending: false,
                 sortByColumn: x => x.Id
             );
-
         var statuses = repositoryResult.Result;
 
-        return new StatusResult<IEnumerable<Status>> { Succeeded = true, StatusCode = 200, Result = statuses };
+
+        return repositoryResult.Succeeded ?
+            new StatusResult<IEnumerable<Status>> { Succeeded = true, StatusCode = 200, Result = statuses }
+        : new StatusResult<IEnumerable<Status>> { Succeeded = false, StatusCode = repositoryResult.StatusCode, Error = repositoryResult.Error };
     }
 
     public async Task<StatusResult<Status>> GetStatusByIdAsync(int id)
     {
         var repositoryResult = await _statusRepository.GetAsync(x => x.Id == id);
-
         var status = repositoryResult.Result;
-        if (status == null)
-            return new StatusResult<Status> { Succeeded = false, StatusCode = 404, Error = $"Status with id '{id}' was not found." };
 
-        return new StatusResult<Status> { Succeeded = true, StatusCode = 200, Result = status };
+        return repositoryResult.Succeeded ?
+            new StatusResult<Status> { Succeeded = true, StatusCode = 200, Result = status }
+        : new StatusResult<Status> { Succeeded = false, StatusCode = repositoryResult.StatusCode, Error = repositoryResult.Error };
+    }
+
+    public async Task<StatusResult<Status>> GetStatusByNamedAsync(string statusName)
+    {
+        var repositoryResult = await _statusRepository.GetAsync(x => x.StatusName == statusName);
+        var status = repositoryResult.Result;
+
+        return repositoryResult.Succeeded ?
+               new StatusResult<Status> { Succeeded = true, StatusCode = 200, Result = status }
+           : new StatusResult<Status> { Succeeded = false, StatusCode = repositoryResult.StatusCode, Error = repositoryResult.Error };
     }
 }

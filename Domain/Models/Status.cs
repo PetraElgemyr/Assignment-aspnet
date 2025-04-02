@@ -2,6 +2,6 @@
 
 public class Status
 {
-    public string Id { get; set; } = null!;
+    public int Id { get; set; } 
     public string StatusName { get; set; } = null!;
 }
