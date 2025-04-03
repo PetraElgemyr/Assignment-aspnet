@@ -1,7 +1,10 @@
 ﻿using Data.Contexts;
+using Data.Entitites;
 using Domain.Extensions;
+using Domain.Models;
 using Domain.Responses;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
@@ -19,6 +22,7 @@ public interface IBaseRepository<TEntity, TModel> where TEntity : class
 
 public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity, TModel> where TEntity : class
 {
+
     protected readonly AppDbContext _context;
     protected readonly DbSet<TEntity> _table;
 
@@ -29,6 +33,10 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
     }
 
 
+
+
+
+
     public virtual async Task<RepositoryResult<IEnumerable<TModel>>> GetAllAsync(bool orderByDescending = false, Expression<Func<TEntity, object>>? sortByColumn = null, Expression<Func<TEntity, bool>>? filterBy = null, int take = 0, params Expression<Func<TEntity, object>>[] includes)
     {
         IQueryable<TEntity> query = _table;
@@ -37,8 +45,38 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
             query = query.Where(filterBy);
 
         if (includes != null && includes.Length != 0)
+        {
             foreach (var include in includes)
+            {
                 query = query.Include(include);
+
+                //var memberExpression = include.Body as MemberExpression ??
+                //          ((UnaryExpression)include.Body).Operand as MemberExpression;
+                
+                //if (memberExpression != null)
+                //{
+                //    var externalEntityType = memberExpression.Type;
+                //    var mappingDictionary = new Dictionary<Type, Type> {
+                //        { typeof(UserEntity), typeof(User) },
+                //        { typeof(ClientEntity), typeof(Client) },
+                //        { typeof(StatusEntity), typeof(Status) }
+                //    };
+                    
+                //    var destinationType = mappingDictionary.TryGetValue(externalEntityType, out var dtoType) ? dtoType : null;
+                //    if (destinationType != null)
+                //    {
+                //        var externalEntities = query.Select(include).ToList(); // Hämta relaterade entiteter
+                //        var mappedMethod = typeof(MappingExtensions)
+                //            .GetMethod(nameof(MappingExtensions.MapTo))
+                //            .MakeGenericMethod(destinationType); // Anropa MapTo<UserModel>() dynamiskt
+                //        var mappedEntities = externalEntities
+                //            .Select(e => mappedMethod.Invoke(null, new[] { e }))
+                //            .ToList();
+                //    }
+                //}
+               
+            }
+        }
 
         if (sortByColumn != null)
             query = orderByDescending
@@ -51,6 +89,8 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
         }
 
         var entities = await query.ToListAsync();
+
+        // TODO fråga hans om att mappa alla externa entiteter för sig?? innan mappning av projects
         var result = entities.Select(entity => entity.MapTo<TModel>());
         return new RepositoryResult<IEnumerable<TModel>> { Succeeded = true, StatusCode = 200, Result = result };
     }

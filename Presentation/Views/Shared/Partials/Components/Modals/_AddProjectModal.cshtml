@@ -1,0 +1,80 @@
+﻿@model AddProjectViewModel
+
+<div id="addProjectModal" class="modal">
+    <div class="modal-content">
+        <header class="modal-header">
+            <h3>Add Project</h3>
+            <button data-type="close" data-target="#addProjectModal" type="button" class="btn-close"></button>
+        </header>
+        <div class="modal-body">
+            <form id="projectForm" novalidate method="post" data-name="project" asp-action="Add" asp-controller="Projects" enctype="multipart/form-data">
+
+
+                <div class="form-group">
+                    <label asp-for="ProjectName"></label>
+                    <div class="field-group">
+                        <input asp-for="ProjectName" />
+                        <span asp-validation-for="ProjectName"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Description"></label>
+                    <div class="field-group">
+                        <input asp-for="Description" />
+                        <span asp-validation-for="Description"></span>
+                    </div>
+                </div>
+
+                <div class="form-group date-group">
+                    <div class="form-group-date">
+                        <label asp-for="StartDate"></label>
+                        <div class="field-group">
+                            <input asp-for="StartDate" type="date" />
+                            <span asp-validation-for="StartDate"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group-date">
+                        <label asp-for="EndDate"></label>
+                        <div class="field-group">
+                            <input asp-for="EndDate" type="date" />
+                            <span asp-validation-for="EndDate"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Budget"></label>
+                    <div class="field-group">
+                        <input asp-for="Budget" type="number"/>
+                        <span asp-validation-for="Budget"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ClientId"></label>
+                    <div class="field-group">
+                        @* <select asp-for="ClientId" asp-items="" ></select> *@
+                        <span asp-validation-for="Budget"></span>
+                    </div>
+                </div>
+
+            
+                 
+                <button type="submit" class="btn btn-blue btn-submit">Create</button>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+@* <option value="someValie" @(ViewBag.someVariable == "someValue" ? "selected" : String.Empty)>...</option> *@
+
+@* <select data-val="true" data-val-range="A user type must be selected." data-val-range-max="2" data-val-range-min="1" data-val-required="The UserType field is required." id="UserType" name="UserType" class="input-validation-error"> *@
+@*     <option>System.Web.Mvc.SelectListItem</option> *@
+@*     <option>System.Web.Mvc.SelectListItem</option> *@
+@*     <option>System.Web.Mvc.SelectListItem</option> *@
+@* </select> *@

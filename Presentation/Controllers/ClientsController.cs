@@ -14,15 +14,22 @@ public class ClientsController(IClientService clientService) : Controller
     private readonly IClientService _clientService = clientService;
 
     [Route("admin/clients")]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         ViewBag.ErrorMessage = "";
-        return View();
+
+        var clientResult = await _clientService.GetClientsAsync();
+        var model = new ClientsViewModel
+        {
+            Clients = clientResult.Result!
+        };
+
+        return View(model);
     }
 
     [HttpPost]
     [Route("admin/clients")]
-    public async Task<IActionResult> AddClient(AddClientViewModel model)
+    public async Task<IActionResult> Add(AddClientViewModel model)
     {
         ViewBag.ErrorMessage = null;
 

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ClientsViewModel
+@{
     ViewData["Title"] = "Clients";
 }
 
@@ -7,8 +8,17 @@
         <h1>@ViewData["Title"]</h1>
         <button type="button" data-type="modal" data-target="#addClientModal" class="btn btn-add"><span>Add Client</span></button>
     </div>
+
+    <div class="clients">
+        @foreach (var client in Model.Clients)
+        {
+            <div class="card client">
+                <h4 class="name">@client.ClientName</h4>
+            </div>
+        }
+    </div>
 </section>
 
 
-<partial name="Partials/Components/Modals/_AddClientModal" />
-<script src="~/js/clientForm.js" asp-append-version="true"></script>
+<partial name="Partials/Components/Modals/_AddClientModal" model="Model.AddClientViewModel" />
+<script src="~/js/addForms.js" asp-append-version="true"></script>

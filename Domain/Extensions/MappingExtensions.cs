@@ -20,10 +20,15 @@ public static class MappingExtensions
             {
                 var value = sourceProperty.GetValue(source);
                 destinationProperty.SetValue(destination, value);
+
             }
         }
 
         return destination;
 
     }
+
+
+
+  
 }
