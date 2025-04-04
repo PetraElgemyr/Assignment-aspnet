@@ -939,8 +939,9 @@ form {
     width: 550px;
 }
 
-
-
+#addProjectModal .modal-content {
+    width: 550px;
+}
 
 
 
@@ -1209,3 +1210,58 @@ input:checked + .slider {
             opacity: 1;
             pointer-events: auto;
         }
+
+
+#Description {
+}
+
+.hide {
+    display: none;
+}
+
+.wysiwyg-container textarea {
+    display: none;
+}
+
+
+.wysiwyg-editor {
+    width: 100%;
+    outline: none;
+    border: none !important;
+    border-radius: 14px;
+    min-height: 150px;
+    font-size: 1em;
+    font-weight: 400;
+    font-family: var(--font-standard);
+    color: var(--form-input-text-color);
+    background-color: var(--form-input-background-color);
+    transition: border-color 0.1s ease-in-out;
+}
+
+.ql-editor {
+    border: 1px solid var(--form-input-border-color);
+    border-radius: 14px;
+}
+
+
+    .ql-editor:focus {
+        border: 1px solid var(--form-input-border-focus-color);
+    }
+
+
+.wysiwyg-toolbar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: none !important;
+    border-top: 1px solid var(--form-input-border-color) !important;
+}
+
+.ql-editor.ql-blank:before {
+    color: var(--form-input-placeholder-color);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    font-family: var(--font-standard);
+}

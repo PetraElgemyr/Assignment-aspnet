@@ -7,7 +7,7 @@ using Presentation.Models;
 
 namespace Presentation.Controllers;
 
-//[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 public class ClientsController(IClientService clientService) : Controller
 {
 

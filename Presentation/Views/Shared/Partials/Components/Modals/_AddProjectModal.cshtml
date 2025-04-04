@@ -17,12 +17,30 @@
                         <span asp-validation-for="ProjectName"></span>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label asp-for="Description"></label>
-                    <div class="field-group">
-                        <input asp-for="Description" />
-                        <span asp-validation-for="Description"></span>
+                    <div class="wysiwyg-container">
+                        <textarea asp-for="Description" class="hide"></textarea>
+                        <div id="add-project-description-editor" class="wysiwyg-editor"></div>
+                        <div id="add-project-description-toolbar" class="wysiwyg-toolbar">
+                            <span class="ql-formats">
+                                <button class="ql-bold"></button>
+                                <button class="ql-italic"></button>
+                                <button class="ql-underline"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-align" value=""></button>
+                                <button class="ql-align" value="center"></button>
+                                <button class="ql-align" value="right"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-list" value="bullet"></button>
+                                <button class="ql-list" value="ordered"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-link"></button>
+                            </span>
+                        </div>
                     </div>
                 </div>
 
@@ -71,10 +89,6 @@
 </div>
 
 
-@* <option value="someValie" @(ViewBag.someVariable == "someValue" ? "selected" : String.Empty)>...</option> *@
-
-@* <select data-val="true" data-val-range="A user type must be selected." data-val-range-max="2" data-val-range-min="1" data-val-required="The UserType field is required." id="UserType" name="UserType" class="input-validation-error"> *@
-@*     <option>System.Web.Mvc.SelectListItem</option> *@
-@*     <option>System.Web.Mvc.SelectListItem</option> *@
-@*     <option>System.Web.Mvc.SelectListItem</option> *@
-@* </select> *@
+<script>
+    initWysiwygEditor('#add-project-description-editor', '#add-project-description-toolbar','#Description', '@Html.Raw(Model?.Description ?? "")')
+</script>
