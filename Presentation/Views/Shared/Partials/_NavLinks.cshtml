@@ -12,7 +12,7 @@
 
     @if (User.IsInRole("Admin"))
     {
-        <a class="nav-link @(Context.Request.Path == "/admin/members" ? "active": "")" asp-controller="Members" asp-action="Index">
+        <a class="nav-link @(Context.Request.Path == "/admin/members" ? "active": "")" asp-controller="Users" asp-action="Index">
             <i class="fa-duotone fa-solid fa-user-group"></i>
             <span>Members</span>
         </a>

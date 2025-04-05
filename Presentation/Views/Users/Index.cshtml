@@ -1,10 +1,21 @@
-﻿@{
+﻿@model MembersViewModel
+
+@{
     ViewData["Title"] = "Members";
 }
 
 <section id="members">
     <div class="section-header">
         <h1>@ViewData["Title"]</h1>
-        <button type="button" data-type="modal" data-target="#addMemberModal" class="btn btn-add"><span>Add Member</span></button>
+        @* <button type="button" data-type="modal" data-target="#addClientModal" class="btn btn-add"><span>Add Member</span></button> *@
+    </div>
+
+    <div class="members">
+        @foreach (var member in Model.Members)
+        {
+            <div class="card client">
+                <h4 class="name">@member.FirstName @member.LastName</h4>
+            </div>
+        }
     </div>
 </section>
