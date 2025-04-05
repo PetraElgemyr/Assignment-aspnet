@@ -1,4 +1,8 @@
-﻿@model AddProjectViewModel
+﻿@model ProjectsViewModel
+@{
+    var selectedUsersJson = "[]";
+}
+
 
 <div id="addProjectModal" class="modal">
     <div class="modal-content">
@@ -11,16 +15,23 @@
 
 
                 <div class="form-group">
-                    <label asp-for="ProjectName"></label>
+                    <label asp-for="AddProjectViewModel.ProjectName"></label>
                     <div class="field-group">
-                        <input asp-for="ProjectName" />
-                        <span asp-validation-for="ProjectName"></span>
+                        <input asp-for="AddProjectViewModel.ProjectName" />
+                        <span asp-validation-for="AddProjectViewModel.ProjectName"></span>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label asp-for="Description"></label>
+                    <label asp-for="AddProjectViewModel.ClientId"></label>
+                    <select asp-for="AddProjectViewModel.ClientId" asp-items="Model.Clients"></select>
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="AddProjectViewModel.Description"></label>
                     <div class="wysiwyg-container">
-                        <textarea asp-for="Description" class="hide"></textarea>
+                        <textarea asp-for="AddProjectViewModel.Description" class="hide"></textarea>
                         <div id="add-project-description-editor" class="wysiwyg-editor"></div>
                         <div id="add-project-description-toolbar" class="wysiwyg-toolbar">
                             <span class="ql-formats">
@@ -46,40 +57,40 @@
 
                 <div class="form-group date-group">
                     <div class="form-group-date">
-                        <label asp-for="StartDate"></label>
+                        <label asp-for="AddProjectViewModel.StartDate"></label>
                         <div class="field-group">
-                            <input asp-for="StartDate" type="date" />
-                            <span asp-validation-for="StartDate"></span>
+                            <input asp-for="AddProjectViewModel.StartDate" />
+                            <span asp-validation-for="AddProjectViewModel.StartDate"></span>
                         </div>
                     </div>
 
                     <div class="form-group-date">
-                        <label asp-for="EndDate"></label>
+                        <label asp-for="AddProjectViewModel.EndDate"></label>
                         <div class="field-group">
-                            <input asp-for="EndDate" type="date" />
-                            <span asp-validation-for="EndDate"></span>
+                            <input asp-for="AddProjectViewModel.EndDate"  />
+                            <span asp-validation-for="AddProjectViewModel.EndDate"></span>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Budget"></label>
+                    <label asp-for="AddProjectViewModel.Budget"></label>
                     <div class="field-group">
-                        <input asp-for="Budget" type="number"/>
-                        <span asp-validation-for="Budget"></span>
+                        <input asp-for="AddProjectViewModel.Budget"/>
+                        <span asp-validation-for="AddProjectViewModel.Budget"></span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="ClientId"></label>
-                    <div class="field-group">
-                        @* <select asp-for="ClientId" asp-items="" ></select> *@
-                        <span asp-validation-for="Budget"></span>
+                    <label asp-for="AddProjectViewModel.UserIds"></label>
+                    <input type="hidden" asp-for="AddProjectViewModel.UserIds" />
+                    <div id="tagged-users" class="form-input form-tag-select">
+                        <input type="text" id="user-search" class="form-tag-input" placeholder="Add member..." />
+                        <label for="user-search" class="fa-solid fa-ellipsis"></label>
+                        <div id="user-search-results" class="search-results"></div>
                     </div>
                 </div>
 
-            
-                 
                 <button type="submit" class="btn btn-blue btn-submit">Create</button>
 
             </form>
@@ -90,5 +101,21 @@
 
 
 <script>
-    initWysiwygEditor('#add-project-description-editor', '#add-project-description-toolbar','#Description', '@Html.Raw(Model?.Description ?? "")')
+
+    const preSelectedUsers = @Html.Raw(selectedUsersJson);
+    initWysiwygEditor('#add-project-description-editor', '#add-project-description-toolbar','#add-project-description', '@Html.Raw(Model?.AddProjectViewModel.Description ?? "")')
+      initTagSelector({
+        containerId: 'tagged-users',
+        inputId: 'user-search',
+        resultsId: 'user-search-results',
+        searchUrl: (query) => '@Url.Action("SearchUsers", "Projects")' + '?term=' + encodeURIComponent(query), // TODO kom ihåg ändra till p-controller
+        displayProperty: 'fullName',
+        // imageProperty: 'imageUrl',
+        imageProperty: '@Model!.AddProjectViewModel.Image',
+        tagClass: 'user-tag',
+        avatarFolder: '/images/profiles/',
+        emptyMessage: 'No members found.',
+        preSelected: preSelectedUsers,
+        selectedInputIds: 'AddProjectViewModel_UserIds' // TODO kom ihåg nytt id
+    })
 </script>

@@ -10,35 +10,25 @@
         <button type="button" data-type="modal" data-target="#addProjectModal" class="btn btn-add"><span>Add Project</span></button>
     </div>
     <div class="projects">
-        @foreach(var project in Model.Projects)
+        @foreach (var project in Model.Projects)
         {
             <div class="card project">
-                <div class="image"> 
-                    @if (!string.IsNullOrEmpty(project.Image)) 
-                    { 
-                        <img src="~/images/projects/uploads/projects/@project.Image" alt="@project.ProjectName" /> 
-                    } 
-                    else 
+                @* 
+
+                *@
+                <div class="image">
+                    @if (!string.IsNullOrEmpty(project.Image))
                     {
-                        <img src="~/images/projects/project-template.svg" alt="image-template" /> 
+                        <img src="~/images/projects/uploads/projects/@project.Image" alt="@project.ProjectName" />
+                    }
+                    else
+                    {
+                        <img src="~/images/projects/project-template.svg" alt="image-template" />
                     }
                 </div>
                 <h4 class="name">@project.ProjectName</h4>
-                @* <div class="">@project.Client.ClientName</div> *@
-                @* <div class="">@project.Description</div> *@
+                <div>@project.Client.ClientName</div>
                 <div class="">@project.Budget sek</div>
-                @* <div class="">@project.StartDate</div> *@
-                @* <div class="">@project.EndDate</div> *@
-                @* @if (project.Status != null) *@
-                @* { *@
-                @*     <div class="">@project.Status</div> *@
-
-                @* } else *@
-                @* { *@
-                @*     <div class="">Status saknas</div> *@
-
-                @* } *@
-                @* <div class="">@project.User.FirstName @project.User.LastName</div> *@
             </div>
         }
 
@@ -46,5 +36,5 @@
 </section>
 
 
-<partial name="Partials/Components/Modals/_AddProjectModal" model="Model.AddProjectViewModel"/>
+<partial name="Partials/Components/Modals/_AddProjectModal" model="@Model" />
 <script src="~/js/addForms.js" asp-append-version="true"></script>

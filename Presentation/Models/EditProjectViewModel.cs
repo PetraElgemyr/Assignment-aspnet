@@ -1,14 +1,15 @@
-﻿using Domain.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Presentation.Models;
 
-public class AddProjectViewModel
+public class EditProjectViewModel
 {
-    [DataType(DataType.Upload)]
-    [Display(Name = "Project Image", Prompt = "Select project image")]
-    public IFormFile? Image { get; set; }
+
+    [Editable(allowEdit: false)]
+    public string Id { get; set; } = null!;
+
+    [DataType(DataType.Text)]
+    public string? Image { get; set; }
 
     [Required(ErrorMessage = "is required.")]
     [DataType(DataType.Text)]
@@ -40,6 +41,11 @@ public class AddProjectViewModel
     public string ClientId { get; set; } = null!;
 
 
+    [DataType(DataType.Text)]
+    [Required(ErrorMessage = "is required")]
+    [Display(Name = "Status", Prompt = "Select status")]
+    public string StatusId { get; set; } = null!;
+
 
 
     [DataType(DataType.Text)]
@@ -50,5 +56,4 @@ public class AddProjectViewModel
 
     [Display(Name = "Members", Prompt = "Search for members")]
     public string? UserIds { get; set; }
-
 }
