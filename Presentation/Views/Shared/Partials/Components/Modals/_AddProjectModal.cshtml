@@ -82,10 +82,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="AddProjectViewModel.UserIds"></label>
+                    <label asp-for="AddProjectViewModel.UserIds">Members</label>
                     <input type="hidden" asp-for="AddProjectViewModel.UserIds" />
-                    <div id="tagged-users" class="form-input form-tag-select">
-                        <input type="text" id="user-search" class="form-tag-input" placeholder="Add member..." />
+
+                    <div id="tagged-users" class="form-input form-user-select">
+                        <input type="text" id="user-search" class="form-user-input" placeholder="Add member(s)..." />
                         <label for="user-search" class="fa-solid fa-ellipsis"></label>
                         <div id="user-search-results" class="search-results"></div>
                     </div>
@@ -103,7 +104,10 @@
 <script>
 
     const preSelectedUsers = @Html.Raw(selectedUsersJson);
-    initWysiwygEditor('#add-project-description-editor', '#add-project-description-toolbar','#AddProjectViewModel_Description', '@Html.Raw(Model?.AddProjectViewModel.Description ?? "")')
+    initWysiwygEditor('#add-project-description-editor',
+    '#add-project-description-toolbar',
+    '#AddProjectViewModel_Description', 
+    '@Html.Raw(Model.AddProjectViewModel.Description ?? "")')
       
     initTagSelector({
         containerId: 'tagged-users',
@@ -112,7 +116,7 @@
         searchUrl: (query) => '@Url.Action("SearchUsers", "Projects")' + '?term=' + encodeURIComponent(query), // TODO kom ihåg ändra till p-controller
         displayProperty: 'fullName',
         // imageProperty: 'imageUrl',
-        imageProperty: '@Model!.AddProjectViewModel.Image',
+        imageProperty: '@Model.AddProjectViewModel.Image',
         tagClass: 'user-tag',
         avatarFolder: '/images/profiles/',
         emptyMessage: 'No members found.',
