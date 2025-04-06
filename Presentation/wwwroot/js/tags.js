@@ -97,8 +97,9 @@
                     resultItem.dataset.id = item.id;
 
                     if (config.tagClass === 'user-tag') {
+
                         resultItem.innerHTML = `
-                            <img class="user-avatar" src="${config.avatarFolder || ''}${item[config.imageProperty]}">
+                            <img class="user-avatar" src="${config.avatarFolder || ''}${item.image}">
                             <span>${item[config.displayProperty]}</span>
                         `;
                     } else {
@@ -127,7 +128,7 @@
 
         if (config.tagClass === 'user-tag') {
             tag.innerHTML = `
-                <img class="user-avatar" src="${config.avatarFolder || ''}${item[config.imageProperty]}">
+                <img class="user-avatar" src="${config.avatarFolder || ''}${item.image}">
                 <span>${item[config.displayProperty]}</span>
             `;
         } else {

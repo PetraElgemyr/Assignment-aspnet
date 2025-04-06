@@ -31,7 +31,6 @@ function initAddForms() {
                 else if (res.status === 400) {
                     const data = await res.json()
                     if (data.errors) {
-                        console.log(data.errors)
                         addFormErrorMessages(data.errors, form)
                     }
                 }
