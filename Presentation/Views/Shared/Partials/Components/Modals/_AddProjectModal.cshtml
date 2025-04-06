@@ -103,8 +103,9 @@
 <script>
 
     const preSelectedUsers = @Html.Raw(selectedUsersJson);
-    initWysiwygEditor('#add-project-description-editor', '#add-project-description-toolbar','#add-project-description', '@Html.Raw(Model?.AddProjectViewModel.Description ?? "")')
-      initTagSelector({
+    initWysiwygEditor('#add-project-description-editor', '#add-project-description-toolbar','#AddProjectViewModel_Description', '@Html.Raw(Model?.AddProjectViewModel.Description ?? "")')
+      
+    initTagSelector({
         containerId: 'tagged-users',
         inputId: 'user-search',
         resultsId: 'user-search-results',
