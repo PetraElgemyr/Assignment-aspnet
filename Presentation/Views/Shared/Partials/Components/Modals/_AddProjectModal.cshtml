@@ -2,7 +2,103 @@
 @{
     var selectedUsersJson = "[]";
 }
+@* 
 
+
+
+
+<section id="addProjectModal" class="modal">
+    <div class="card">
+        <div class="card-header">
+            <h3>Add Project</h3>
+            <button data-type="close" data-target="#addProjectModal" type="button" class="btn-close"></button>
+        </div>
+        <div class="card-body">
+            <form asp-controller="Projects" asp-action="Add" method="post" id="projectForm" novalidate data-name="project" enctype="multipart/form-data">
+              
+                <div class="form-group">
+                    <div class="image-preview-container">
+                        <div id="image-container" class="circle circle-gray">
+                            <i class="fa-duotone fa-solid fa-camera" style="--fa-primary-color: #bdbdbd; --fa-secondary-color: #ffffff; --fa-secondary-opacity: 1;"></i>
+                        </div>
+
+
+                    </div>
+                    <img id="image-preview" src="" class="hide"/>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Project Name</label>
+                    <input class="form-input" type="text" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Client Name</label>
+                    <div class="form-select" data-placeholder="Select a client">
+                        <button type="button" class="form-select-trigger">
+                            <span class="form-select-text"></span>
+                        </button>
+                        <ul class="form-select-options">
+                            <li class="form-select-option">Client 1</li>
+                            <li class="form-select-option">Client 2</li>
+                        </ul>
+                        <input type="hidden" name="client-select-value" />
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="hide"></textarea>
+
+                </div>
+
+                <div class="form-horizontal-group">
+                    <div class="form-group">
+                        <label class="form-label">Start Date</label>
+                        <input class="form-input" type="date" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">End Date</label>
+                        <input class="form-input" type="date" />
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+                    <label class="form-label">Members</label>
+                    <div class="form-select" data-placeholder="Select a member">
+                        <button type="button" class="form-select-trigger">
+                            <span class="form-select-text"></span>
+                        </button>
+                        <ul class="form-select-options">
+                            <li class="form-select-option">Hans Mattin-Lassei</li>
+                            <li class="form-select-option">Tommy Mattin-Lassei</li>
+                        </ul>
+                        <input type="hidden" name="member-select-value" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Budget</label>
+                    <div class="form-input-extended">
+                        <i class="fa-duotone fa-solid fa-dollar-sign"></i>
+                        <input class="form-input" type="text" />
+
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">Create</button>
+            </form>
+
+        </div>
+    </div>
+
+</section>
+
+*@
 
 <div id="addProjectModal" class="modal">
     <div class="modal-content">
@@ -12,7 +108,17 @@
         </header>
         <div class="modal-body">
             <form id="projectForm" novalidate method="post" data-name="project" asp-action="Add" asp-controller="Projects" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="image-preview-container">
+                        <div id="image-container" class="circle circle-gray">
+                            <i class="fa-duotone fa-solid fa-camera" style="--fa-primary-color: #bdbdbd; --fa-secondary-color: #ffffff; --fa-secondary-opacity: 1;"></i>
+                        </div>
 
+
+                    </div>
+                    <img id="image-preview" src="" class="hide" />
+
+                </div>
 
                 <div class="form-group">
                     <label asp-for="AddProjectViewModel.ProjectName"></label>
@@ -101,14 +207,16 @@
 </div>
 
 
+
+
 <script>
 
     const preSelectedUsers = @Html.Raw(selectedUsersJson);
     initWysiwygEditor('#add-project-description-editor',
     '#add-project-description-toolbar',
-    '#AddProjectViewModel_Description', 
+    '#AddProjectViewModel_Description',
     '@Html.Raw(Model.AddProjectViewModel.Description ?? "")')
-      
+
     initTagSelector({
         containerId: 'tagged-users',
         inputId: 'user-search',
