@@ -16,6 +16,15 @@
     </div>
 
     <div class="card-body">
+        <form method="post" asp-controller="ExternalAuth" asp-action="Index" novalidate>
+            <button type="submit" class="btn-external">
+                <img src="/images/icons/google-icon.svg" />
+                <span>Sign up with Google</span>
+            </button>
+        </form>
+
+        <div class="divider"><span>or</span></div>
+
         <form asp-controller="Auth" asp-action="SignUp" method="post" enctype="multipart/form-data" novalidate>
             <input type="hidden" name="returnUrl" value="@ViewBag?.ReturnUrl" />
 
