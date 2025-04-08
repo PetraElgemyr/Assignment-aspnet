@@ -50,11 +50,13 @@
     --dark-700: #414144;
     --dark-opacity-20: rgba(26, 25, 38, 0.2);
     --dark-opacity-60: rgba(26, 25, 38, 0.6);
-    /* Skuggor, kanter & delare */
+    /* Skuggor & delare */
     --box-shadow: 0 5px 5px 1px rgba(0, 0, 0, 0.05);
+    --divider-color: var(--gray-500);
+    /* Kanter */
     --border-color: var(--gray-500);
     --border-focus-color: var(--blue-semilight);
-    --divider-color: var(--gray-500);
+    --border-radius: 12px;
     /* Text & bakgrund */
     --text-color: var(--dark-400);
     --text-muted-color: var(--gray-800);
@@ -70,6 +72,13 @@
     --btn-hover-text-color: var(--white-100);
     --btn-hover-border-color: var(--white-100);
     --btn-hover-background-color: var(--blue-dark);
+    /* Knappar - external */
+    --btn-external-text-color: var(--dark-400);
+    --btn-external-border-color: var(--white-200);
+    --btn-external-background-color: var(--white-200);
+    --btn-external-hover-text-color: var(--dark-400);
+    --btn-external-hover-border-color: var(--blue-light-opacity);
+    --btn-external-hover-background-color: var(--blue-light-opacity);
     /* Länkar */
     --link-color: var(--blue);
     --link-hover-color: var(--blue-dark);
@@ -556,6 +565,32 @@ aside .btn-close {
 
 
 
+.btn-external {
+    transition: background-color 0.1s ease-in-out, border-color 0.1s ease-in-out, color 0.1s ease-in-out;
+    background-color: var(--btn-external-background-color);
+    border: 1px solid var(--btn-external-border-color);
+    color: var(--btn-external-text-color);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 400;
+    font-style: normal;
+    font-family: var(--font-standard);
+    padding: 0.8rem 1.5rem;
+    width: 100%;
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+    cursor: pointer;
+}
+
+    .btn-external:hover {
+        background-color: var(--btn-external-hover-background-color);
+        border: 1px solid var(--btn-external-hover-border-color);
+        color: var(--btn-external-hover-text-color);
+    }
+
+
 
 
 
@@ -685,12 +720,30 @@ form {
             gap: 0.3rem;
         }
 
-    form label {
-        color: var(--form-label-color);
-        font-size: 1em;
-        font-weight: 600;
-        font-family: var(--font-standard);
+
+.form-checkbox-group {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+    .form-checkbox-group .form-label {
+        font-weight: 400;
+        margin-top: 2px;
+        cursor: pointer;
     }
+
+form label {
+    color: var(--form-label-color);
+    font-size: 1em;
+    font-weight: 600;
+    font-family: var(--font-standard);
+    display: inline-flex
+}
+
+
 
     form input,
     form select,
@@ -867,6 +920,47 @@ form {
     .card .card-footer {
         margin-top: 2rem;
     }
+
+/* ============================= */
+/*        Dividers delare      */
+/* ============================= */
+.divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid var(--divider-color);
+    }
+
+    .divider:not(:empty)::before {
+        margin-right: 1rem;
+    }
+
+    .divider:not(:empty)::after {
+        margin-left: 1rem;
+    }
+
+    .divider span {
+        font-size: 0.8em;
+        text-transform: uppercase;
+        color: var(--text-muted-semilight-color);
+    }    
+
+
+
+
+
+
+
+
+
+
 
 /* ============================= */
 /*           Logga in            */
