@@ -9,6 +9,10 @@ public class AddClientViewModel
     [Display(Name = "Client Name", Prompt = "Enter client name")]
     public string ClientName { get; set; } = null!;
 
+    [DataType(DataType.Upload)]
+    public IFormFile? Image { get; set; }
+
     [DataType(DataType.Text)]
-    public string? Image { get; set; }
+    [Display(Name = "Location", Prompt = "Enter location (optional)")]
+    public string? Location { get; set; }
 }

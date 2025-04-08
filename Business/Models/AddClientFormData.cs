@@ -7,6 +7,8 @@ public class AddClientFormData
 {
     public string? Image { get; set; }
     public string ClientName { get; set; } = null!;
+    public string? Location { get; set; }
+
 
 }
 

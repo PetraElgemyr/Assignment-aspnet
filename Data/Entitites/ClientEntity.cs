@@ -8,6 +8,7 @@ public class ClientEntity
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string? Image { get; set; }
     public string ClientName { get; set; } = null!;
+    public string? Location { get; set; } 
 
     public virtual ICollection<ProjectEntity> Projects { get; set; } = [];
 }
