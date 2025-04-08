@@ -22,49 +22,46 @@ public class ProjectsController(IProjectService projectService, IClientService c
     public async Task<IActionResult> Index()
     {
         var projectResult = await _projectService.GetProjectsAsync();
+        var clientResult = await _clientService.GetClientsAsync();
+        var statusResult = await _statusService.GetStatusesAsync();
+        var userResult = await _userService.GetUsersAsync();
 
-        if (projectResult.Succeeded)
+        var projectViewModels = new List<ProjectViewModel>();
+        if (projectResult.Result!.Any())
         {
-            var projectViewModels = new List<ProjectViewModel>();
-            var clientResult = await _clientService.GetClientsAsync();
-            var clients = clientResult.Result;
-            var statusResult = await _statusService.GetStatusesAsync();
-            
-
-            if (projectResult.Result!.Any())
+            foreach (var project in projectResult.Result!)
             {
-                 foreach (var project in projectResult.Result!)
-                {
-                    var vm = project.MapTo<ProjectViewModel>();
-                    vm.Client = clients!.FirstOrDefault(x => x.Id == project.ClientId)!;
-                    projectViewModels.Add(vm);
-                }
+                var vm = project.MapTo<ProjectViewModel>();
+                vm.Client = clientResult.Result!.FirstOrDefault(x => x.Id == project.ClientId)!;
+                vm.Status = statusResult.Result!.FirstOrDefault(x => x.Id == project.StatusId)!;
+                vm.User = userResult.Result!.FirstOrDefault(x => x.Id == project.UserId)!;
+                projectViewModels.Add(vm);
             }
-
-            var model = new ProjectsViewModel
-            {
-                Projects = projectViewModels,
-                Clients = await GetClientsSelectListAsync(),
-                //Statuses = await GetStatusesSelectListAsync(), i edit bara
-                Statuses = statusResult.Result ?? [],
-                AddProjectViewModel = new AddProjectViewModel(),
-                EditProjectViewModel = new EditProjectViewModel(),
-            };
-
-            return View(model);
         }
-        return View();
+
+        var model = new ProjectsViewModel
+        {
+            Projects = projectViewModels,
+            Statuses = statusResult.Result ?? [],
+            AddProjectViewModel = new AddProjectViewModel
+            {
+                Users = await GetUsersSelectListAsync(),
+                Clients = await GetClientsSelectListAsync(),
+            },
+            EditProjectViewModel = new UpdateProjectViewModel
+            {
+                Users = await GetUsersSelectListAsync(),
+                Clients = await GetClientsSelectListAsync(),
+                Statuses = await GetStatusesSelectListAsync()
+            },
+        };
+
+        return View(model);
     }
 
 
 
     #region Add
-    //[HttpGet]
-    //public IActionResult Add()
-    //{
-    //    ViewBag.ErrorMessage = "";
-    //    return View();
-    //}
 
     [HttpPost]
     [Route("admin/projects")]
@@ -75,47 +72,65 @@ public class ProjectsController(IProjectService projectService, IClientService c
 
         if (!ModelState.IsValid)
         {
-            var errors = ModelState.Where(x => x.Value?.Errors.Count > 0)
+            var errors = ModelState
+                .Where(x => x.Value?.Errors.Count > 0)
                 .ToDictionary(
                 kvp => kvp.Key,
                 kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
                 );
-
             return BadRequest(new { errors });
+            //return Json(new { success = false, errors });
         }
-
+        
         var addProjectFormData = model.MapTo<AddProjectFormData>();
         var result = await _projectService.CreateProjectAsync(addProjectFormData);
-
         return result.StatusCode switch
         {
-            200 => Ok(),
+            201 => Ok(),
             400 => BadRequest(result.Error),
             409 => Conflict(),
             _ => Problem(),
         };
+        //if (result.Succeeded)
+        //    return Json(new { success = true });
 
+        //return Json(new { success = false });
 
 
     }
     #endregion
 
 
-    //[HttpPut]
-    //public async Task<IActionResult> Update(UpdateProjectViewModel model)
-    //{
 
-    //    var projectExists = await _projectService.ProjectExists(model.id);
-    //    if (!projectExists)
-    //    {
-    //        return Json(new { });
-    //    }
 
-    //    var updateProjectFormData = model.MapTo<UpdateProjectFormData>();
-    //    var result = await _projectService.UpdateProjectAsync(updateProjectFormData);
+    [HttpPut]
+    public async Task<IActionResult> Update(UpdateProjectViewModel model)
+    {
 
-    //    return Json(new { });
-    //}
+        ViewBag.ErrorMessage = null;
+
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState
+                .Where(x => x.Value?.Errors.Count > 0)
+                .ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
+                );
+            return BadRequest(new { errors });
+        }
+
+        var projectExists = await _projectService.ProjectExists(model.Id);
+        if (!projectExists)
+        {
+            return NotFound(new { error = $"Project with id '{model.Id}' was not found." });
+        }
+
+        var updateProjectFormData = model.MapTo<UpdateProjectFormData>();
+        var result = await _projectService.UpdateProjectAsync(updateProjectFormData);
+
+        return Json(new { });
+    }
 
 
     //[HttpDelete]
@@ -147,6 +162,17 @@ public class ProjectsController(IProjectService projectService, IClientService c
         });
 
         return statusList!;
+    }
+
+    private async Task<IEnumerable<SelectListItem>> GetUsersSelectListAsync()
+    {
+        var result = await _userService.GetUsersAsync();
+        var userResult = result.Result?.Select(u => new SelectListItem
+        {
+            Value = u.Id,
+            Text = $"{u.FirstName} {u.LastName}"
+        });
+        return userResult!;
     }
 
     private async Task<IEnumerable<SelectListItem>> GetStatusesSelectListAsync()

@@ -1,9 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace Presentation.Models;
 
-public class EditProjectViewModel
+public class UpdateProjectViewModel
 {
+
+    public IEnumerable<SelectListItem> Users { get; set; } = [];
+    public IEnumerable<SelectListItem> Clients { get; set; } = [];
+    public IEnumerable<SelectListItem> Statuses { get; set; } = [];
+
+
 
     [Editable(allowEdit: false)]
     public string Id { get; set; } = null!;
@@ -54,6 +61,4 @@ public class EditProjectViewModel
     public string UserId { get; set; } = null!;
 
 
-    [Display(Name = "Members", Prompt = "Search for members")]
-    public string? UserIds { get; set; }
 }

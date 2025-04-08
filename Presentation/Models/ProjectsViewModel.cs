@@ -7,7 +7,7 @@ public class ProjectsViewModel
 {
 
     public AddProjectViewModel AddProjectViewModel { get; set; } = new();
-    public EditProjectViewModel EditProjectViewModel { get; set; } = new();
+    public UpdateProjectViewModel EditProjectViewModel { get; set; } = new();
     public IEnumerable<ProjectViewModel> Projects { get; set; } = [];
     //public IEnumerable<Project> Projects { get; set; } = [];
     public IEnumerable<SelectListItem> Clients { get; set; } = [];

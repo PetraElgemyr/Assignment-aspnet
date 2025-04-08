@@ -12,6 +12,8 @@ public class Project
     public DateTime? StartDate { get; set; }
 
     public DateTime? EndDate { get; set; }
+    public DateTime Created { get; set; }
+
 
     public decimal? Budget { get; set; }
     public string ClientId { get; set; } = null!;

@@ -1,17 +1,35 @@
-﻿
-@{
+﻿@{
     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
-    var userResult =await userService.GetUserByIdAsync(userId);
+    var userResult = await userService.GetUserByIdAsync(userId);
     var user = userResult.Result;
     var displayName = await userService.GetDisplayNameAsync(userId);
 }
 
 <div class="account-dropdown-container">
-    <img id="account-dropdown-button" data-type="dropdown" data-target="#account-dropdown" src="~/images/profiles/@user.Image" alt="User Avatar" class="account-avatar" />
+
+    @if (!string.IsNullOrEmpty(user!.Image))
+    { // just nu hämta från inlagd bild i min images/profiles. 
+        // Ej från upload då man inte kan lägga till bildfil än.
+        <img id="account-dropdown-button" data-type="dropdown" data-target="#account-dropdown" src="~/images/profiles/@user.Image" alt="User Avatar" class="account-avatar" />
+    }
+    else
+    {
+        <img id="account-dropdown-button" data-type="dropdown" data-target="#account-dropdown" src="~/images/profiles/user-template.svg" alt="User Avatar" class="account-avatar" />
+    }
+
 
     <div id="account-dropdown" class="account-dropdown">
         <div class="account-info">
-            <img src="~/images/profiles/@user.Image" alt="User Avatar" class="account-avatar-mini" />
+            @if (!string.IsNullOrEmpty(user!.Image))
+            { // just nu hämta från inlagd bild i min images/profiles.
+                // Ej från upload då man inte kan lägga till bildfil än.
+                <img id="account-dropdown-button" data-type="dropdown" data-target="#account-dropdown" src="~/images/profiles/@user.Image" alt="User Avatar" class="account-avatar" />
+            }
+            else
+            {
+                <img id="account-dropdown-button" data-type="dropdown" data-target="#account-dropdown" src="~/images/profiles/user-template.svg" alt="User Avatar" class="account-avatar" />
+            }
+
             <span class="account-name">
                 @displayName
             </span>

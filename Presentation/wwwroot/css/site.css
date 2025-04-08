@@ -966,7 +966,7 @@ form label {
 /*           Logga in            */
 /* ============================= */
 #login {
-    width: 600px;
+    width: 550px;
     text-align: center;
 }
 
@@ -979,7 +979,7 @@ form label {
 /*           Sign Up            */
 /* ============================= */
 #signup {
-    width: 600px;
+    width: 550px;
     text-align: center;
 }
 

@@ -1,10 +1,11 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Business.Models;
 
 public class AddProjectFormData
 {
-    public string? Image { get; set; }
+    public IFormFile? Image { get; set; }
     public string ProjectName { get; set; } = null!;
     public string? Description { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using Business.Models;
+﻿using Business.Handlers;
+using Business.Models;
 using Data.Entitites;
 using Data.Repositories;
 using Domain.Extensions;
@@ -10,28 +11,34 @@ namespace Business.Services;
 public interface IProjectService
 {
     Task<ProjectResult> CreateProjectAsync(AddProjectFormData formData);
+    Task<ProjectResult> DeleteProjectByIdAsync(string id);
     Task<ProjectResult<Project>> GetProjectAsync(string id);
     Task<ProjectResult<IEnumerable<Project>>> GetProjectsAsync();
     Task<bool> ProjectExists(string id);
+    Task<ProjectResult> UpdateProjectAsync(UpdateProjectFormData formData);
 }
 
-public class ProjectService(IProjectRepository projectRepository, IStatusService statusService) : IProjectService
+public class ProjectService(IProjectRepository projectRepository, IStatusService statusService, IImageHandler imageHandler) : IProjectService
 {
     private readonly IProjectRepository _projectRepository = projectRepository;
     private readonly IStatusService _statusService = statusService;
+    private readonly IImageHandler _imageHandler = imageHandler;
 
     public async Task<ProjectResult> CreateProjectAsync(AddProjectFormData formData)
     {
         if (formData == null)
             return new ProjectResult { Succeeded = false, StatusCode = 400, Error = "Invalid form data provided." };
 
-        var projectEntity = formData.MapTo<ProjectEntity>();
         // TODO kolla om client, user och statusid finns
+        //projectEntity.Created = DateTime.Now; onödig????
+        
+        var projectEntity = formData.MapTo<ProjectEntity>();
+        // hårdkodad status till 1 tillfälligt. TODO kolla sen
+        projectEntity.StatusId = 1;
+        
+        var imageFileName = await _imageHandler.SaveProjectImageAsync(formData.Image!);
+        projectEntity.Image = imageFileName;
 
-        // TODO fixa statusid från formdata
-        //var statusResult = await _statusService.GetStatusByIdAsync(1);
-        //var status = statusResult.Result;
-        //projectEntity.StatusId = status!.Id;
         var result = await _projectRepository.AddAsync(projectEntity);
 
         return result.Succeeded ?
@@ -82,6 +89,10 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
         // TODO kolla om client, user och statusid finns
 
 
+
+        var imageFileName = await _imageHandler.SaveProjectImageAsync(formData.Image!);
+        updatedProjectEntity.Image = imageFileName;
+
         var result = await _projectRepository.UpdateAsync(updatedProjectEntity);
 
         return result.Succeeded ?
@@ -89,7 +100,7 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
             : new ProjectResult { Succeeded = false, StatusCode = result.StatusCode, Error = result.Error };
     }
 
-// TODO delete project
+    // TODO delete project
     public async Task<ProjectResult> DeleteProjectByIdAsync(string id)
     {
         if (string.IsNullOrEmpty(id))
@@ -103,5 +114,5 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
     }
 
 
-    
+
 }

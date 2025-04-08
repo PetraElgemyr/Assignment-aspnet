@@ -5,16 +5,15 @@
 
 
 function initAddForms() {
-    //const form = document.querySelector('#clientForm')
     const forms = document.querySelectorAll('form')
     forms.forEach(form => {
         form.addEventListener('submit', async (e) => {
             e.preventDefault()
 
-            clearFormErrorMessages(form)
+            //clearFormErrorMessages(form)
 
             const formData = new FormData(form)
-
+            console.log("formdata här:",form)
             try {
                 const res = await fetch(form.action, {
                     method: 'post',
@@ -31,7 +30,8 @@ function initAddForms() {
                 else if (res.status === 400) {
                     const data = await res.json()
                     if (data.errors) {
-                        addFormErrorMessages(data.errors, form)
+                        console.log(data.errors)
+                        //addFormErrorMessages(data.errors, form)
                     }
                 }
                 else if (res.status === 409) {
@@ -40,7 +40,6 @@ function initAddForms() {
                 else {
                     alert('Unable to create')
                 }
-
             }
             catch {
 
@@ -64,26 +63,26 @@ function clearFormErrorMessages(form) {
     })
 }
 
-function findInputByKey(form, key) {
-    return form.querySelector(`[name*="${key}"]`);
-}
+//function findInputByKey(form, key) {
+//    return form.querySelector(`[name*="${key}"]`);
+//}
 
-function addFormErrorMessages(errors, form) {
-    Object.keys(errors).forEach(key => {
-        const input = findInputByKey(form, key);
+//function addFormErrorMessages(errors, form) {
+//    Object.keys(errors).forEach(key => {
+//        const input = findInputByKey(form, key);
 
-        //const input = form.querySelector(`[name="${key}"]`) // här ska jag kolla om det name contains key (clientId) för just nu är name=AddProjectViewModel_ClientId
-        if (input) {
-            input.classList.add('input-validation-error')
-        }
+//        //const input = form.querySelector(`[name="${key}"]`) // här ska jag kolla om det name contains key (clientId) för just nu är name=AddProjectViewModel_ClientId
+//        if (input) {
+//            input.classList.add('input-validation-error')
+//        }
 
-        const span = form.querySelector(`[data-valmsg-for="${key}"]`)
-        if (span) {
-            span.innerText = errors[key].join(' ')
-            span.classList.add('field-validation-error')
-        }
-    })
-}
+//        const span = form.querySelector(`[data-valmsg-for="${key}"]`)
+//        if (span) {
+//            span.innerText = errors[key].join(' ')
+//            span.classList.add('field-validation-error')
+//        }
+//    })
+//}
 
 function closeFormModal(modal) {
     if (modal) {
