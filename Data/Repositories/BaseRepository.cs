@@ -49,32 +49,6 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
             foreach (var include in includes)
             {
                 query = query.Include(include);
-
-                //var memberExpression = include.Body as MemberExpression ??
-                //          ((UnaryExpression)include.Body).Operand as MemberExpression;
-                
-                //if (memberExpression != null)
-                //{
-                //    var externalEntityType = memberExpression.Type;
-                //    var mappingDictionary = new Dictionary<Type, Type> {
-                //        { typeof(UserEntity), typeof(User) },
-                //        { typeof(ClientEntity), typeof(Client) },
-                //        { typeof(StatusEntity), typeof(Status) }
-                //    };
-                    
-                //    var destinationType = mappingDictionary.TryGetValue(externalEntityType, out var dtoType) ? dtoType : null;
-                //    if (destinationType != null)
-                //    {
-                //        var externalEntities = query.Select(include).ToList(); // Hämta relaterade entiteter
-                //        var mappedMethod = typeof(MappingExtensions)
-                //            .GetMethod(nameof(MappingExtensions.MapTo))
-                //            .MakeGenericMethod(destinationType); // Anropa MapTo<UserModel>() dynamiskt
-                //        var mappedEntities = externalEntities
-                //            .Select(e => mappedMethod.Invoke(null, new[] { e }))
-                //            .ToList();
-                //    }
-                //}
-               
             }
         }
 
