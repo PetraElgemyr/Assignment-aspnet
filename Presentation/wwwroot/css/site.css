@@ -130,6 +130,10 @@
     --notification-background-color: transparent;
     --notification-background-hover-color: var(--blue-light-opacity);
     --notification-active-background-color: var(--blue-light-opacity);
+    /*project options dropdown */
+    --project-dropdown-background-color: var(--white-100);
+    --project-info-background-color: var(--white-200);
+
     /* dots */
     --dot-red-background-color: var(--red);
     --dot-yellow-background-color: var(--yellow);
@@ -921,6 +925,8 @@ form label {
         margin-top: 2rem;
     }
 
+
+
 /* ============================= */
 /*        Dividers delare      */
 /* ============================= */
@@ -1096,7 +1102,7 @@ input:checked + .slider {
 .account-dropdown-container {
     position: relative;
     display: inline-block;
-    z-index: 0;
+    z-index: 1000;
 }
 
 .account-avatar {
@@ -1185,22 +1191,33 @@ input:checked + .slider {
         color: var(--account-option-text-hover-color);
         text-decoration: none;
     }
+/******************************************************/
 
-.project-dropdown-container {
+.project-dropdown-header-container{
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-end
 }
 
+
+
+.project-dropdown-container {
+    position: relative;
+    display: inline-block;
+    z-index: 0;
+}
+
+
+  
 .project-dropdown-button {
-    z-index: 1;
     width: 50px;
     height: 50px;
     border-radius: 25%;
-    background-color: var(--account-info-background-color);
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    right: 0;
 }
 
     .project-dropdown-button:hover {
@@ -1212,7 +1229,80 @@ input:checked + .slider {
     }
 
 
+.project-dropdown-container .project-dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: var(--project-dropdown-background-color);
+    border: var(--card-border-color);
+    border-radius: 16px;
+    min-width: 150px;
+    min-height: min-content;
+    box-shadow: var(--box-shadow);
+    display: none;
+    z-index: 999;
+}
 
+
+
+.project-dropdown-container .project-dropdown.show {
+    display: block;
+}
+
+    .project-dropdown-container .project-dropdown .project-dropdown-options-container {
+        width: 100%;
+    }
+
+.project-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: var(--project-info-background-color);
+    color: var(--account-info-text-color);
+    border-radius: 14px;
+    margin: 0.5rem;
+}
+
+    .project-info:hover {
+        cursor: pointer;
+        background-color: var(--gray-100) !important;
+        border: 0px solid var(--gray-100);
+        color: var(--text-color);
+        transition: background-color 0.1s ease-in-out, border-color 0.1s ease-in-out, color 0.1s ease-in-out;
+    }
+
+
+.project-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px;
+    margin: 0.5rem;
+    border-radius: 14px;
+}
+
+    .project-info .label,
+    .project-action .label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        font-family: var(--font-standard)
+    }
+
+    .project-action:hover {
+        cursor: pointer;
+        color: var(--navlink-text-active-color);
+        background-color: var(--navlink-background-active-color);
+        transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+    }
+
+
+
+
+/******************************************************/
 
     .notification-dropdown-container {
         position: relative;
@@ -1244,7 +1334,7 @@ input:checked + .slider {
         min-height: 150px;
         box-shadow: var(--box-shadow);
         display: none;
-        z-index: 999;
+        z-index: 1000;
     }
 
         .notification-dropdown-container .notification-dropdown.show {

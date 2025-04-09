@@ -133,7 +133,9 @@
     --dot-green-background-color: var(--green);
     /* modals */
     --modal-screen-background-color: #7070703b;
-    /*    --modal-background-color: var(--white-100);*/
+    --project-dropdown-background-color: var(--white-100);
+    --project-info-background-color: var(--white-200);
+    /*    #28263b dark500*/
 }
 
 
@@ -197,4 +199,26 @@
     --account-option-text-color: var(--white-400);
     --account-info-background-color: var(--background-color);
     --account-info-text-color: var(--white-400);
+    /*Project options*/
+    --project-dropdown-background-color: var(--dark-100);
+    --project-info-background-color: var(--dark-400);
+}
+
+
+
+
+
+[data-mode="dark"] .project-options-button-light {
+    display: none;
+}
+
+[data-mode="dark"] .project-options-button-dark {
+    display: inline-block;
+}
+.project-options-button-dark {
+    display: none;
+}
+
+.project-options-button-light {
+    display: inline-block;
 }

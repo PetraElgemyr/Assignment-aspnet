@@ -88,8 +88,6 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
         var updatedProjectEntity = formData.MapTo<ProjectEntity>();
         // TODO kolla om client, user och statusid finns
 
-
-
         var imageFileName = await _imageHandler.SaveProjectImageAsync(formData.Image!);
         updatedProjectEntity.Image = imageFileName;
 

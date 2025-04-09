@@ -157,7 +157,7 @@ background-color: #00000036;
 
 /* Cards */
 .card {
-    position: relative;
+/*    position: relative;  ta bort för att projektkort ej ska synas framför dropdowns  */
     background-color: var(--card-background-color);
     border: 1px solid var(--card-border-color);
     color: var(--card-text-color);

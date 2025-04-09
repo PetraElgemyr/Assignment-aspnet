@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Presentation.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Presentation.Controllers;
 
@@ -79,7 +80,6 @@ public class ProjectsController(IProjectService projectService, IClientService c
                 kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
                 );
             return BadRequest(new { errors });
-            //return Json(new { success = false, errors });
         }
         
         var addProjectFormData = model.MapTo<AddProjectFormData>();
@@ -91,10 +91,7 @@ public class ProjectsController(IProjectService projectService, IClientService c
             409 => Conflict(),
             _ => Problem(),
         };
-        //if (result.Succeeded)
-        //    return Json(new { success = true });
-
-        //return Json(new { success = false });
+     
 
 
     }
@@ -104,6 +101,7 @@ public class ProjectsController(IProjectService projectService, IClientService c
 
 
     [HttpPut]
+    [Route("admin/projects")]
     public async Task<IActionResult> Update(UpdateProjectViewModel model)
     {
 
@@ -133,19 +131,42 @@ public class ProjectsController(IProjectService projectService, IClientService c
     }
 
 
-    //[HttpDelete]
-    //public async Task<IActionResult> Delete(string id)
-    //{
+    [HttpDelete]
+    [Route("admin/projects/{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
 
-    //    var projectExists = await _projectService.ProjectExists(id);
-    //    if (!projectExists)
-    //    {
-    //        return Json(new { });
-    //    }
+        ViewBag.ErrorMessage = null;
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState
+                .Where(x => x.Value?.Errors.Count > 0)
+                .ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
+                );
+            return BadRequest(new { errors });
+        }
 
-    //    var result = _projectService.DeleteProjectByIdAsync(id);
-    //    return Json(new { });
-    //}
+
+
+
+        var projectExists = await _projectService.ProjectExists(id);
+        if (!projectExists)
+        {
+            return BadRequest("Finns inget projekt att ta bort");
+        }
+
+        var result = await  _projectService.DeleteProjectByIdAsync(id);
+
+          return result.StatusCode switch
+            {
+                200 => Ok(),
+                400 => BadRequest(result.Error),
+                409 => Conflict(),
+                _ => Problem(),
+            };
+    }
 
 
 

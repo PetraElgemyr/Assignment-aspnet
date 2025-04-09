@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Projects";
+    var projects = Model.Projects;
+    var projectToEdit = Model.Projects.FirstOrDefault();
 }
 
 <section id="projects">
@@ -14,17 +16,9 @@
         {
             <div class="card project">
 
-                    <div class="project-dropdown-container">
-                        <div class="project-dropdown-button" data-type="dropdown" data-target="#project-dropdown">
-                            <img src="~/images/icons/more-icon.svg" alt="more project options" />
-                        </div>
-
-                    </div>
-
-
-                   
-
-               
+            <div class="project-dropdown-header-container">
+                    <partial name="Partials/Dropdowns/_ProjectOptionsDropdown" model="project" />
+            </div>
                 <div class="image">
                     @if (!string.IsNullOrEmpty(project.Image))
                     {
@@ -46,4 +40,6 @@
 
 
 <partial name="Partials/Components/Modals/_AddProjectModal" model="@Model.AddProjectViewModel" />
+
 <script src="~/js/addForms.js" asp-append-version="true"></script>
+<script src="~/js/handleProjects.js" asp-append-version="true"></script>

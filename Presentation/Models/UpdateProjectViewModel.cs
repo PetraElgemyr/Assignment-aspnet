@@ -44,20 +44,20 @@ public class UpdateProjectViewModel
 
     [DataType(DataType.Text)]
     [Required(ErrorMessage = "is required")]
-    [Display(Name = "Client", Prompt = "Select client")]
+    [Display(Name = "Client", Prompt = "Select a client")]
     public string ClientId { get; set; } = null!;
 
 
     [DataType(DataType.Text)]
     [Required(ErrorMessage = "is required")]
-    [Display(Name = "Status", Prompt = "Select status")]
+    [Display(Name = "Status", Prompt = "Select a status")]
     public string StatusId { get; set; } = null!;
 
 
 
     [DataType(DataType.Text)]
     [Required(ErrorMessage = "is required")]
-    [Display(Name = "User", Prompt = "Select members")]
+    [Display(Name = "User", Prompt = "Select a members")]
     public string UserId { get; set; } = null!;
 
 
