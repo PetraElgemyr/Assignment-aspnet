@@ -192,4 +192,7 @@
     /* profil */
     --profile-info-background-color: var(--dark-100);
     --profile-info-text-color: var(--white-100);
+    --account-option-text-color: var(--white-400);
+    --account-info-background-color: var(--background-color);
+    --account-info-text-color: var(--white-400);
 }

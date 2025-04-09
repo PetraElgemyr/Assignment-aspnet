@@ -164,10 +164,10 @@
     --navlink-background-hover-color: var(--blue-light-opacity);
     --navlink-background-active-color: var(--blue-light-opacity);
     /* Formulär */
-    --form-text-color: var(--dark-400);
+    --form-text-color: var(--dark-400); /* ändra */
     --form-border-color: var(--white-100);
     --form-background-color: var(--white-100);
-    --form-label-color: var(--dark-200);
+    --form-label-color: var(--white-200);
     --form-input-text-color: var(--dark-200);
     --form-input-placeholder-color: var(--gray-600);
     --form-input-background-color: var(--white-100);
@@ -175,7 +175,7 @@
     --form-input-border-focus-color: var(--blue-semilight);
     --form-error-input-text-color: var(--dark-200);
     --form-error-input-background-color: var(--white-100);
-    --form-error-input-border-color: var(--red-semilight);
+    --form-error-input-border-color: var(--red);
     --form-error-input-border-focus-color: var(--blue-semilight);
     --form-error-message-text-color: var(--red-dark);
     --form-error-message-background-color: var(--red-light);
