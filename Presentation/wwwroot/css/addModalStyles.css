@@ -354,6 +354,7 @@ input[type="date"] {
     position: relative;
     font-family: var(--font-standard);
     width: 100%;
+    color: var(--form-input-text-color);
 }
 
     .form-select.has-placeholder .form-select-trigger {

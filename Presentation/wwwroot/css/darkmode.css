@@ -91,7 +91,7 @@
     --form-background-color: var(--white-100);
     --form-label-color: var(--dark-200);
     --form-input-text-color: var(--dark-200);
-    --form-input-placeholder-color: var(--gray-600);
+    --form-input-placeholder-color: var(--gray-800);
     --form-input-background-color: var(--white-100);
     --form-input-border-color: var(--gray-400);
     --form-input-border-focus-color: var(--blue-semilight);
@@ -103,7 +103,7 @@
     --form-error-message-background-color: var(--red-light);
     --form-error-message-border-color: var(--red-light);
     --form-search-input-text-color: var(--dark-200);
-    --form-search-input-placeholder-color: var(--gray-600);
+    --form-search-input-placeholder-color: var(--gray-800);
     --form-search-input-background-color: var(--white-200);
     --form-search-input-border-color: var(--white-200);
     --form-search-input-border-focus-color: var(--blue-semilight);
@@ -161,10 +161,10 @@
     --navlink-background-hover-color: var(--blue-light-opacity);
     --navlink-background-active-color: var(--blue-light-opacity);
     /* Formulär */
-    --form-text-color: var(--dark-400);
+    --form-text-color: var(--white-200);
     --form-border-color: var(--white-100);
     --form-background-color: var(--white-100);
-    --form-label-color: var(--dark-200);
+    --form-label-color: var(--white-200);
     --form-input-text-color: var(--dark-200);
     --form-input-placeholder-color: var(--gray-600);
     --form-input-background-color: var(--white-100);
@@ -195,4 +195,6 @@
     --account-option-text-color: var(--white-400);
     --account-info-background-color: var(--background-color);
     --account-info-text-color: var(--white-400);
+
+    --
 }

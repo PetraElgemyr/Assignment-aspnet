@@ -1088,7 +1088,7 @@ input:checked + .slider {
 
 .dropdown-divider {
     height: 1px;
-    background-color: var(--border-color);
+    background-color: var(--divider-color);
     margin: 5px 0;
 }
 
