@@ -53,6 +53,7 @@
     --border-color: var(--gray-500);
     --border-focus-color: var(--blue-semilight);
     --border-radius: 12px;
+    --image-preview-border-color: var(--gray-500);
     /* Text & bakgrund */
     --text-color: var(--dark-400);
     --text-muted-color: var(--gray-800);
@@ -182,6 +183,7 @@
     --form-search-input-background-color: var(--dark-100);
     --form-search-input-border-color: var(--dark-100);
     --form-search-input-border-focus-color: var(--blue-dark);
+    --image-preview-border-color: var(--gray-800);
     /* Aviseringar */
     --alert-notification-error-text-color: var(--red-dark);
     --alert-notification-error-background-color: var(--red-light);
@@ -195,6 +197,4 @@
     --account-option-text-color: var(--white-400);
     --account-info-background-color: var(--background-color);
     --account-info-text-color: var(--white-400);
-
-    --
 }

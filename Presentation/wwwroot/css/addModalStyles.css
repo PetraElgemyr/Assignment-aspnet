@@ -55,6 +55,7 @@
     --border-color: var(--gray-500);
     --border-focus-color: var(--blue-semilight);
     --divider-color: var(--gray-200);
+    --image-preview-border-color: var(--gray-500);
     /* shapes - circle */
     --circle-gray-text-color: var(--white-100);
     --circle-gray-border-color: var(--dark-opacity-60);
@@ -506,7 +507,7 @@ textarea,
     align-items: center;
     width: 150px;
     height: 150px;
-    border: 2px dashed var(--border-color);
+    border: 2px dashed var(--image-preview-border-color); /* ändra */
     margin: auto;
     cursor: pointer;
     overflow: hidden;
