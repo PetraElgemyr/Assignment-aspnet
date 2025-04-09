@@ -55,6 +55,7 @@
     --border-color: var(--gray-500);
     --border-focus-color: var(--blue-semilight);
     --divider-color: var(--gray-200);
+    --image-preview-border-color: var(--gray-500);
     /* shapes - circle */
     --circle-gray-text-color: var(--white-100);
     --circle-gray-border-color: var(--dark-opacity-60);
@@ -66,7 +67,7 @@
     --text-heading-color: var(--dark-100);
     /* backgrounds */
     --background-color: var(--white-200);
-    --modal-background-color: var(--dark-opacity-20);
+    --modal-background-color: #00000036;
     /* dots */
     --dot-background-color: var(--white-200);
     --dot-red-text-color: var(--red);
@@ -85,7 +86,6 @@
     --badge-normal-text-color: var(--dark-400);
     --badge-normal-border-color: var(--gray-100-opacity);
     --badge-normal-background-color: var(--gray-100-opacity);
-
     /* button */
     --btn-text-color: var(--white-100);
     --btn-border-color: var(--white-100);
@@ -93,8 +93,6 @@
     --btn-hover-text-color: var(--white-100);
     --btn-hover-border-color: var(--white-100);
     --btn-hover-background-color: var(--blue-dark);
-
-   
     /* button - close */
     --btn-close-text-color: var(--dark-400);
     --btn-close-border-color: var(--transparent);
@@ -132,14 +130,13 @@
     --form-error-message-text-color: var(--red-dark);
     --form-error-message-background-color: var(--red-light);
     --form-error-message-border-color: var(--red-light);
-    
-
 }
 
 /* Modals */
 .modal {
     z-index: 500;
-    background-color: var(--modal-background-color);
+/*    background-color: var(--modal-background-color);*/
+background-color: #00000036;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -358,6 +355,7 @@ input[type="date"] {
     position: relative;
     font-family: var(--font-standard);
     width: 100%;
+    color: var(--form-input-text-color);
 }
 
     .form-select.has-placeholder .form-select-trigger {
@@ -509,7 +507,7 @@ textarea,
     align-items: center;
     width: 150px;
     height: 150px;
-    border: 2px dashed var(--border-color);
+    border: 2px dashed var(--image-preview-border-color); /* ändra */
     margin: auto;
     cursor: pointer;
     overflow: hidden;
