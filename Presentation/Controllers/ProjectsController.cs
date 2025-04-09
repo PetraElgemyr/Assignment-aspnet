@@ -1,12 +1,10 @@
 ﻿using Business.Models;
 using Business.Services;
 using Domain.Extensions;
-using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Presentation.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Presentation.Controllers;
 
@@ -43,17 +41,22 @@ public class ProjectsController(IProjectService projectService, IClientService c
         var model = new ProjectsViewModel
         {
             Projects = projectViewModels,
-            Statuses = statusResult.Result ?? [],
             AddProjectViewModel = new AddProjectViewModel
             {
                 Users = await GetUsersSelectListAsync(),
                 Clients = await GetClientsSelectListAsync(),
             },
-            EditProjectViewModel = new UpdateProjectViewModel
+            UpdateProjectViewModel = new UpdateProjectViewModel
             {
                 Users = await GetUsersSelectListAsync(),
                 Clients = await GetClientsSelectListAsync(),
-                Statuses = await GetStatusesSelectListAsync()
+                Statuses = await GetStatusesSelectListAsync(),
+                Id = "",
+                ProjectName = "",
+                StatusId =0,
+                ClientId = "",
+                UserId = ""
+
             },
         };
 
