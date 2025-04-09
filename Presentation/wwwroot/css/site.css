@@ -1186,13 +1186,39 @@ input:checked + .slider {
         text-decoration: none;
     }
 
-
-
-.notification-dropdown-container {
-    position: relative;
-    display: inline-block;
-    z-index: 0;
+.project-dropdown-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
 }
+
+.project-dropdown-button {
+    z-index: 1;
+    width: 50px;
+    height: 50px;
+    border-radius: 25%;
+    background-color: var(--account-info-background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .project-dropdown-button:hover {
+        background-color: var(--gray-100) !important;
+        border: 0px solid var(--gray-100);
+        color: var(--text-color);
+        transition: background-color 0.1s ease-in-out, border-color 0.1s ease-in-out, color 0.1s ease-in-out;
+        cursor: pointer;
+    }
+
+
+
+
+    .notification-dropdown-container {
+        position: relative;
+        display: inline-block;
+        z-index: 0;
+    }
 
     .notification-dropdown-container .btn-notification {
         position: relative;

@@ -13,6 +13,18 @@
         @foreach (var project in Model.Projects)
         {
             <div class="card project">
+
+                    <div class="project-dropdown-container">
+                        <div class="project-dropdown-button" data-type="dropdown" data-target="#project-dropdown">
+                            <img src="~/images/icons/more-icon.svg" alt="more project options" />
+                        </div>
+
+                    </div>
+
+
+                   
+
+               
                 <div class="image">
                     @if (!string.IsNullOrEmpty(project.Image))
                     {
