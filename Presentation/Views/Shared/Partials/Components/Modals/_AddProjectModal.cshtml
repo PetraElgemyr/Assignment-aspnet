@@ -20,8 +20,11 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="ProjectName" class="form-label"></label>
-                    <input asp-for="ProjectName" class="form-input" />
-                    <span asp-validation-for="ProjectName"></span>
+                    @* <div class="form-select"> TODO fråga hans vrf detta förstör selects funktionalitet (d rättar till felmeddelanden) *@
+                        <input asp-for="ProjectName" class="form-input" />
+                        <span asp-validation-for="ProjectName"></span>
+                    @* </div> *@
+                  
                 </div>
                 <div class="form-group">
                     <label asp-for="ClientId" class="form-label">Client Name</label>
@@ -96,7 +99,8 @@
                 <div class="form-group">
                     <label asp-for="Budget" class="form-label">Budget</label>
                     <div class="form-input-extended">
-                        <i class="fa-duotone fa-solid fa-dollar-sign"></i>
+                        @* <i class="fa-duotone fa-solid fa-dollar-sign" ></i> *@
+                        <i class="fa-duotone fa-solid fa-dollar-sign" style="--fa-primary-color: #1c2045; --fa-secondary-color: #1c2045;"></i>
                         <input asp-for="Budget" class="form-input" type="text" />
                     </div>
                 </div>
