@@ -53,7 +53,7 @@ public class ProjectsController(IProjectService projectService, IClientService c
                 Statuses = await GetStatusesSelectListAsync(),
                 Id = "",
                 ProjectName = "",
-                StatusId =0,
+                StatusId = 0,
                 ClientId = "",
                 UserId = ""
 
@@ -103,8 +103,8 @@ public class ProjectsController(IProjectService projectService, IClientService c
 
 
 
-    [HttpPut]
-    [Route("admin/projects")]
+    [HttpPost]
+    [Route("admin/projects/update")]
     public async Task<IActionResult> Update(UpdateProjectViewModel model)
     {
 
@@ -137,7 +137,6 @@ public class ProjectsController(IProjectService projectService, IClientService c
             409 => Conflict(),
             _ => Problem(),
         };
-
     }
 
 

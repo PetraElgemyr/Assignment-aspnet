@@ -8,12 +8,11 @@
 
 })
 
-// Initierar alla Quill-editors på sidan
 function initQuills() {
     document.querySelectorAll('[data-quill-editor]').forEach(editor => {
-        const editorId = editor.id
-        const textarea = document.querySelector(`[data-quill-textarea="#${editorId}"]`)
-        const toolbarId = editor.getAttribute('data-quill-toolbar')
+        const editorId = editor.id;
+        const textarea = document.querySelector(`textarea[data-quill-textarea="#${editorId}"]`);
+        const toolbarId = editor.getAttribute('data-quill-toolbar');
 
         const quill = new Quill(`#${editorId}`, {
             modules: {
@@ -22,14 +21,22 @@ function initQuills() {
             },
             theme: 'snow',
             placeholder: 'Skriv något...'
-        })
+        });
+
+
+       
+        editor.__quill = quill; // Kopplar Quill-instansen (new quill()) till editor-elementet så jag kan komma åt d sen, typ när det finns flera editorer på sidan.
 
         if (textarea) {
             quill.on('text-change', () => {
-                textarea.value = quill.root.innerHTML
-            })
+                textarea.value = quill.root.innerHTML;
+            });
+
+            if (textarea.value) {
+                quill.root.innerHTML = textarea.value; // sätt existerande värde 
+            }
         }
-    })
+    });
 }
 
 // Initierar alla modaler

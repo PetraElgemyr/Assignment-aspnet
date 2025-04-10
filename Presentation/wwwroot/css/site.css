@@ -897,10 +897,20 @@ form label {
 }
 
 div.projects {
+/*    display: grid;
+    grid-template-columns: auto auto auto;*/
     display:flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
+}
+
+
+@media (min-width: 768px) {
+    div.projects {
+       width: 100%;
+
+    }
 }
 
 

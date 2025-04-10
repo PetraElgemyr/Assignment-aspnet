@@ -85,13 +85,13 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
         if (formData == null)
             return new ProjectResult { Succeeded = false, StatusCode = 400, Error = "Invalid form data provided." };
 
-        var updatedProjectEntity = formData.MapTo<ProjectEntity>();
         // TODO kolla om client, user och statusid finns
 
         var imageFileName = await _imageHandler.SaveProjectImageAsync(formData.Image!);
-        updatedProjectEntity.Image = imageFileName;
+        var projectModel = formData.MapTo<Project>();
+        projectModel.Image = imageFileName;
 
-        var result = await _projectRepository.UpdateAsync(updatedProjectEntity);
+        var result = await _projectRepository.UpdateProjectFromModelAsync(projectModel);
 
         return result.Succeeded ?
             new ProjectResult { Succeeded = true, StatusCode = 201 }

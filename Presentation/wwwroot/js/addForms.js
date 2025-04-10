@@ -1,17 +1,14 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
-    initAddForms();
-    initUpdateForms();
+    initForms();
+    //initUpdateForms();
 })
 
-
-function initAddForms() {
-    const forms = document.querySelectorAll('[form-type="add"]')
+function initForms() {
+    const forms = document.querySelectorAll('form')
     forms.forEach(form => {
         form.addEventListener('submit', async (e) => {
             e.preventDefault()
-
             //clearFormErrorMessages(form)
-
             const formData = new FormData(form)
             console.log("formdata här:", form);
 
@@ -20,7 +17,6 @@ function initAddForms() {
                     method: "post",
                     body: formData
                 })
-
                 if (res.ok) {
                     const modal = form.closest('.modal')
                     if (modal)
@@ -40,7 +36,7 @@ function initAddForms() {
                     alert('Already exists')
                 }
                 else {
-                    alert('Unable to create')
+                    alert('Unable to create or update')
                 }
             }
             catch {
@@ -51,53 +47,67 @@ function initAddForms() {
 }
 
 
-function initUpdateForms() {
-    const forms = document.querySelectorAll('[form-type="update"]')
-    forms.forEach(form => {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault()
+//function initUpdateForms() {
+//    const forms = document.querySelectorAll('[form-type="update"]')
+//    forms.forEach(form => {
+//        form.addEventListener('submit', async (e) => {
+//            e.preventDefault()
 
-            //clearFormErrorMessages(form)
+//            //clearFormErrorMessages(form)
 
-            const formData = new FormData(form)
-            console.log("formdata här:", form);
+//            const formData = new FormData(form)
 
-            try {
-                const res = await fetch(form.action, {
-                    method: "put",
-                    body: formData
-                })
+//            try {
+//                const res = await fetch(form.action, {
+//                    method: "post",
+//                    body: formData
+//                })
 
-                if (res.ok) {
-                    const modal = form.closest('.modal')
-                    if (modal)
-                        closeFormModal(modal)
+//                if (res.ok) {
+//                    const modal = form.closest('.modal')
+//                    if (modal)
+//                        closeFormModal(modal)
 
-                    window.location.reload()
-                }
-                else if (res.status === 400) {
-                    const data = await res.json()
-                    if (data.errors) {
-                        console.log(data.errors)
-                        showValidationErrors(data.errors)
-                        //addFormErrorMessages(data.errors, form)
-                    }
-                }
-                else if (res.status === 404) {
-                    alert('Could not found entity to update')
-                }
-                else {
-                    alert('Unable to update')
-                }
+//                    window.location.reload()
+//                }
+//                else if (res.status === 400) {
+//                    const data = await res.json()
+//                    if (data.errors) {
+//                        console.log(data.errors)
+//                        showValidationErrors(data.errors)
+//                        //addFormErrorMessages(data.errors, form)
+//                    }
+//                }
+//                else if (res.status === 404) {
+//                    alert('Could not found entity to update')
+//                }
+//                else {
+//                    alert('Unable to update')
+//                }
+//            }
+//            catch {
+
+//            }
+//        })
+//    })
+//}
+
+function showValidationErrors(errors) {
+    for (const field in errors) {
+        const messages = errors[field];
+        const fieldElement = document.querySelector(`[name="${field}"]`);
+
+        if (fieldElement) {
+            let errorElement = fieldElement.parentElement.querySelector(".field-validation-error");
+            if (!errorElement) {
+                errorElement = document.createElement("div");
+                errorElement.className = "field-validation-error";
+                fieldElement.parentElement.appendChild(errorElement);
             }
-            catch {
-
-            }
-        })
-    })
+            errorElement.innerHTML = messages.join("<br/>");
+        }
+    }
 }
-
-
 
 
 function clearFormErrorMessages(form) {
@@ -144,19 +154,3 @@ function closeFormModal(modal) {
 }
 
 
-function showValidationErrors(errors) {
-    for (const field in errors) {
-        const messages = errors[field];
-        const fieldElement = document.querySelector(`[name="${field}"]`);
-
-        if (fieldElement) {
-            let errorElement = fieldElement.parentElement.querySelector(".field-validation-error");
-            if (!errorElement) {
-                errorElement = document.createElement("div");
-                errorElement.className = "field-validation-error";
-                fieldElement.parentElement.appendChild(errorElement);
-            }
-            errorElement.innerHTML = messages.join("<br/>");
-        }
-    }
-}

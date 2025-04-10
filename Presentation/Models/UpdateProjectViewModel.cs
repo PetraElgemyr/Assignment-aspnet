@@ -52,7 +52,5 @@ public class UpdateProjectViewModel
     [Required(ErrorMessage = "is required")]
     [Display(Name = "User", Prompt = "Select a member")]
     public string UserId { get; set; } = null!;
-
-
 }
 
