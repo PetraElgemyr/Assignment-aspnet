@@ -217,8 +217,10 @@
 }
 .project-options-button-dark {
     display: none;
+    font-size: 1.2em;
 }
 
 .project-options-button-light {
     display: inline-block;
+    font-size: 1.2em;
 }
