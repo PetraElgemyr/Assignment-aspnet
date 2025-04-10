@@ -10,7 +10,6 @@ function initForms() {
             e.preventDefault()
             //clearFormErrorMessages(form)
             const formData = new FormData(form)
-            console.log("formdata här:", form);
 
             try {
                 const res = await fetch(form.action, {

@@ -7,22 +7,23 @@ function handleDeleteProjectRequestFromElement(element) {
 
 async function handleDeleteProjectRequest(projectId) {
     try {
-        console.log("klickat och skickar", projectId)
-
         const response =  await fetch(`/admin/projects/${projectId}`, {
             method: 'DELETE'
         })
 
-        console.log("response är: ", response)
 
         if (response.ok) {
             window.location.reload();
         } else {
+            alert("något gick fel med att radera projekt");
+
             console.log("något gick fel med att radera projekt");
         }
 
     }
     catch (error) {
+        alert("något gick fel med att radera projekt");
+
         console.error("Fel vid borttagning:", error);
     }
 }
