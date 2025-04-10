@@ -42,7 +42,9 @@
                 <div class="form-group">
                     <label asp-for="Description" class="form-label"></label>
                     <div class="wysiwyg">
-                        <textarea id="add-project-description" data-quill-textarea="#add-project-description-wysiwyg-editor"></textarea>
+
+
+                        <textarea asp-for="Description" id="add-project-description" data-quill-textarea="#add-project-description-wysiwyg-editor"></textarea>
                         <div id="add-project-description-wysiwyg-editor" data-quill-editor data-quill-toolbar="#add-project-description-wysiwyg-toolbar" class="wysiwyg-editor"></div>
                         <div id="add-project-description-wysiwyg-toolbar" class="wysiwyg-toolbar">
                             <span class="ql-formats">
