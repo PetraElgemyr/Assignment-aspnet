@@ -1,11 +1,11 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
     initAddForms();
-
+    initUpdateForms();
 })
 
 
 function initAddForms() {
-    const forms = document.querySelectorAll('form')
+    const forms = document.querySelectorAll('[form-type="add"]')
     forms.forEach(form => {
         form.addEventListener('submit', async (e) => {
             e.preventDefault()
@@ -13,10 +13,11 @@ function initAddForms() {
             //clearFormErrorMessages(form)
 
             const formData = new FormData(form)
-            console.log("formdata här:",form)
+            console.log("formdata här:", form);
+
             try {
                 const res = await fetch(form.action, {
-                    method: 'post',
+                    method: "post",
                     body: formData
                 })
 
@@ -47,9 +48,55 @@ function initAddForms() {
             }
         })
     })
-
-
 }
+
+
+function initUpdateForms() {
+    const forms = document.querySelectorAll('[form-type="update"]')
+    forms.forEach(form => {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault()
+
+            //clearFormErrorMessages(form)
+
+            const formData = new FormData(form)
+            console.log("formdata här:", form);
+
+            try {
+                const res = await fetch(form.action, {
+                    method: "put",
+                    body: formData
+                })
+
+                if (res.ok) {
+                    const modal = form.closest('.modal')
+                    if (modal)
+                        closeFormModal(modal)
+
+                    window.location.reload()
+                }
+                else if (res.status === 400) {
+                    const data = await res.json()
+                    if (data.errors) {
+                        console.log(data.errors)
+                        showValidationErrors(data.errors)
+                        //addFormErrorMessages(data.errors, form)
+                    }
+                }
+                else if (res.status === 404) {
+                    alert('Could not found entity to update')
+                }
+                else {
+                    alert('Unable to update')
+                }
+            }
+            catch {
+
+            }
+        })
+    })
+}
+
 
 
 
