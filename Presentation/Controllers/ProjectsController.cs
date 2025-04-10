@@ -130,7 +130,14 @@ public class ProjectsController(IProjectService projectService, IClientService c
         var updateProjectFormData = model.MapTo<UpdateProjectFormData>();
         var result = await _projectService.UpdateProjectAsync(updateProjectFormData);
 
-        return Json(new { });
+        return result.StatusCode switch
+        {
+            201 => Ok(),
+            400 => BadRequest(result.Error),
+            409 => Conflict(),
+            _ => Problem(),
+        };
+
     }
 
 
