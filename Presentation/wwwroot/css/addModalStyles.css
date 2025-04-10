@@ -157,14 +157,13 @@ background-color: #00000036;
 
 /* Cards */
 .card {
-/*    position: relative;  ta bort för att projektkort ej ska synas framför dropdowns  */
     background-color: var(--card-background-color);
     border: 1px solid var(--card-border-color);
     color: var(--card-text-color);
     padding: 1.2rem 1rem 1.2rem 1.5rem;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    width: 550px;
+    width: 550px; 
 }
 
     .card .card-header {
@@ -181,6 +180,12 @@ background-color: #00000036;
     .card .card-footer {
         margin-top: 2rem;
     }
+
+    .card.project-card {
+        width: 30%;
+        margin: 1%;
+    }
+
 
 
 /* Helpers */

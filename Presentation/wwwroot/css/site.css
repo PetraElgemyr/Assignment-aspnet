@@ -896,6 +896,14 @@ form label {
         }
 }
 
+div.projects {
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+
 /* ============================= */
 /*           Kort              */
 /* ============================= */
@@ -910,7 +918,8 @@ form label {
     box-shadow: var(--box-shadow);
 }
 
-    .card .card-header {
+
+     .card-header {
         display: flex;
         justify-content: space-between;
         align-items: center;

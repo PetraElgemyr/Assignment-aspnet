@@ -10,7 +10,6 @@ public class UpdateProjectViewModel
     public IEnumerable<SelectListItem> Clients { get; set; } = [];
     public IEnumerable<SelectListItem> Statuses { get; set; } = [];
 
-    [Editable(allowEdit: false)]
     public string Id { get; set; } = null!;
 
     [DataType(DataType.Upload)]
@@ -29,11 +28,11 @@ public class UpdateProjectViewModel
 
     [DataType(DataType.Date)]
     [Display(Name = "Start date", Prompt = "Enter start date (optional)")]
-    public DateTime? StartDate { get; set; } = DateTime.Now;
+    public DateTime? StartDate { get; set; } 
 
     [DataType(DataType.Date)]
     [Display(Name = "Start date", Prompt = "Enter start date (optional)")]
-    public DateTime? EndDate { get; set; } = DateTime.Now;
+    public DateTime? EndDate { get; set; } 
 
 
     [Display(Name = "Budget", Prompt = "Enter budget (optional)")]
@@ -48,9 +47,6 @@ public class UpdateProjectViewModel
     [Required(ErrorMessage = "is required")]
     [Display(Name = "Status", Prompt = "Select a status")]
     public int StatusId { get; set; } 
-
-
-
 
     [DataType(DataType.Text)]
     [Required(ErrorMessage = "is required")]
