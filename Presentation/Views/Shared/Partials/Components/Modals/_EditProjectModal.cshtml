@@ -1,14 +1,13 @@
-﻿@model AddProjectViewModel
+﻿@model UpdateProjectViewModel
 
-<section id="addProjectModal" class="modal">
+<section id="editProjectModal-@Model.Id" class="modal">
     <div class="card">
         <div class="card-header">
-            <h3>Add Project</h3>
-            <button class="btn-close" data-type="close" data-target="#addProjectModal"></button>
+            <h3>Edit Project</h3>
+            <button class="btn-close" data-type="close" data-target="#editProjectModal-@Model.Id"></button>
         </div>
         <div class="card-body">
-
-            <form form-type="add" id="addProjectForm" asp-controller="Projects" asp-action="Add" method="post" enctype="multipart/form-data" novalidate>
+            <form form-type="update"  id="editProjectModal-@Model.Id" asp-controller="Projects" asp-action="Update" method="post" enctype="multipart/form-data" novalidate>
                 <div class="form-group">
                     <div class="image-preview-container project-image" data-file-upload>
                         <img class="hide" />
@@ -18,15 +17,13 @@
                         <input asp-for="Image" accept="image/*" hidden />
                     </div>
                 </div>
+                <input type="hidden"  asp-for="Id" />
                 <div class="form-group">
                     <label asp-for="ProjectName" class="form-label"></label>
-                    @* <div class="form-select"> TODO fråga hans vrf detta förstör selects funktionalitet (d rättar till felmeddelanden) *@
-                        <input asp-for="ProjectName" class="form-input" />
-                        <span asp-validation-for="ProjectName"></span>
-                    @* </div> *@
-                  
+                    <input asp-for="ProjectName" class="form-input" />
+                    <span asp-validation-for="ProjectName"></span>
                 </div>
-                <div class="form-group">
+               <div class="form-group">
                     <label asp-for="ClientId" class="form-label">Client Name</label>
                     <div class="form-select" data-placeholder="Choose a client">
                         <button type="button" class="form-select-trigger">
@@ -35,21 +32,18 @@
                         <ul class="form-select-options">
                             @foreach (var option in Model.Clients)
                             {
-                                <li class="form-select-option" data-value="@option.Value">@option.Text</li>
+                                    <li class="form-select-option" data-value="@option.Value">@option.Text</li>
                             }
                         </ul>
                         <input type="hidden" asp-for="ClientId" />
                     </div>
-                </div>
-
+                </div> 
                 <div class="form-group">
                     <label asp-for="Description" class="form-label"></label>
                     <div class="wysiwyg">
-
-
-                        <textarea asp-for="Description" id="add-project-description" data-quill-textarea="#add-project-description-wysiwyg-editor"></textarea>
-                        <div id="add-project-description-wysiwyg-editor" data-quill-editor data-quill-toolbar="#add-project-description-wysiwyg-toolbar" class="wysiwyg-editor"></div>
-                        <div id="add-project-description-wysiwyg-toolbar" class="wysiwyg-toolbar">
+                        <textarea  asp-for="Description" id="edit-project-description-@Model.Id" data-quill-textarea="#edit-project-description-wysiwyg-editor-@Model.Id"></textarea>
+                        <div id="edit-project-description-wysiwyg-editor-@Model.Id" data-quill-editor data-quill-toolbar="#edit-project-description-wysiwyg-toolbar-@Model.Id" class="wysiwyg-editor"></div>
+                        <div id="edit-project-description-wysiwyg-toolbar-@Model.Id" class="wysiwyg-toolbar"  >
                             <span class="ql-formats">
                                 <button class="ql-bold"></button>
                                 <button class="ql-italic"></button>
@@ -69,8 +63,7 @@
                             </span>
                         </div>
                     </div>
-                </div>
-
+                </div> 
                 <div class="form-horizontal-group">
                     <div class="form-group">
                         <label asp-for="StartDate" class="form-label"></label>
@@ -81,7 +74,6 @@
                         <input asp-for="EndDate" class="form-input" type="date" />
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label asp-for="UserId" class="form-label"></label>
                     <div class="form-select" data-placeholder="Choose a member">
@@ -91,25 +83,36 @@
                         <ul class="form-select-options">
                             @foreach (var option in Model.Users)
                             {
-                                <li class="form-select-option" data-value="@option.Value">@option.Text</li>
+                                    <li class="form-select-option" data-value="@option.Value">@option.Text</li>
                             }
                         </ul>
                         <input type="hidden" asp-for="UserId" />
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label asp-for="Budget" class="form-label">Budget</label>
                     <div class="form-input-extended">
-                        @* <i class="fa-duotone fa-solid fa-dollar-sign" ></i> *@
-                        <i class="fa-duotone fa-solid fa-dollar-sign" style="--fa-primary-color: #1c2045; --fa-secondary-color: #1c2045;"></i>
+                        <i class="fa-duotone fa-solid fa-dollar-sign"></i>
                         <input asp-for="Budget" class="form-input" type="text" />
                     </div>
                 </div>
-
-                <button type="submit" class="btn">Create</button>
+                <div class="form-group">
+                    <label asp-for="StatusId" class="form-label"></label>
+                    <div class="form-select" data-placeholder="Select a status">
+                        <button type="button" class="form-select-trigger">
+                            <span class="form-select-text"></span>
+                        </button>
+                        <ul class="form-select-options">
+                            @foreach (var option in Model.Statuses)
+                            {
+                                <li class="form-select-option" data-value="@option.Value">@option.Text</li>
+                            }
+                        </ul>
+                        <input type="hidden" asp-for="StatusId" />
+                    </div>
+                </div>
+                <button type="submit" class="btn">Update</button>
             </form>
-
         </div>
     </div>
 </section>

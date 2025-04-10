@@ -1,7 +1,6 @@
 ﻿using Business.Models;
 using Business.Services;
 using Domain.Extensions;
-using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -42,17 +41,22 @@ public class ProjectsController(IProjectService projectService, IClientService c
         var model = new ProjectsViewModel
         {
             Projects = projectViewModels,
-            Statuses = statusResult.Result ?? [],
             AddProjectViewModel = new AddProjectViewModel
             {
                 Users = await GetUsersSelectListAsync(),
                 Clients = await GetClientsSelectListAsync(),
             },
-            EditProjectViewModel = new UpdateProjectViewModel
+            UpdateProjectViewModel = new UpdateProjectViewModel
             {
                 Users = await GetUsersSelectListAsync(),
                 Clients = await GetClientsSelectListAsync(),
-                Statuses = await GetStatusesSelectListAsync()
+                Statuses = await GetStatusesSelectListAsync(),
+                Id = "",
+                ProjectName = "",
+                StatusId = 0,
+                ClientId = "",
+                UserId = ""
+
             },
         };
 
@@ -79,7 +83,6 @@ public class ProjectsController(IProjectService projectService, IClientService c
                 kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
                 );
             return BadRequest(new { errors });
-            //return Json(new { success = false, errors });
         }
         
         var addProjectFormData = model.MapTo<AddProjectFormData>();
@@ -91,10 +94,7 @@ public class ProjectsController(IProjectService projectService, IClientService c
             409 => Conflict(),
             _ => Problem(),
         };
-        //if (result.Succeeded)
-        //    return Json(new { success = true });
-
-        //return Json(new { success = false });
+     
 
 
     }
@@ -103,7 +103,8 @@ public class ProjectsController(IProjectService projectService, IClientService c
 
 
 
-    [HttpPut]
+    [HttpPost]
+    [Route("admin/projects/update")]
     public async Task<IActionResult> Update(UpdateProjectViewModel model)
     {
 
@@ -129,23 +130,52 @@ public class ProjectsController(IProjectService projectService, IClientService c
         var updateProjectFormData = model.MapTo<UpdateProjectFormData>();
         var result = await _projectService.UpdateProjectAsync(updateProjectFormData);
 
-        return Json(new { });
+        return result.StatusCode switch
+        {
+            201 => Ok(),
+            400 => BadRequest(result.Error),
+            409 => Conflict(),
+            _ => Problem(),
+        };
     }
 
 
-    //[HttpDelete]
-    //public async Task<IActionResult> Delete(string id)
-    //{
+    [HttpDelete]
+    [Route("admin/projects/{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
 
-    //    var projectExists = await _projectService.ProjectExists(id);
-    //    if (!projectExists)
-    //    {
-    //        return Json(new { });
-    //    }
+        ViewBag.ErrorMessage = null;
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState
+                .Where(x => x.Value?.Errors.Count > 0)
+                .ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
+                );
+            return BadRequest(new { errors });
+        }
 
-    //    var result = _projectService.DeleteProjectByIdAsync(id);
-    //    return Json(new { });
-    //}
+
+
+
+        var projectExists = await _projectService.ProjectExists(id);
+        if (!projectExists)
+        {
+            return BadRequest("Finns inget projekt att ta bort");
+        }
+
+        var result = await  _projectService.DeleteProjectByIdAsync(id);
+
+          return result.StatusCode switch
+            {
+                200 => Ok(),
+                400 => BadRequest(result.Error),
+                409 => Conflict(),
+                _ => Problem(),
+            };
+    }
 
 
 

@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Projects";
+    var projects = Model.Projects;
+
 }
 
 <section id="projects">
@@ -12,7 +14,25 @@
     <div class="projects">
         @foreach (var project in Model.Projects)
         {
-            <div class="card project">
+
+
+            Model.UpdateProjectViewModel.Id = project.Id;
+            Model.UpdateProjectViewModel.ProjectName = project.ProjectName;
+            Model.UpdateProjectViewModel.Description = project.Description;
+            Model.UpdateProjectViewModel.Image = null;
+            Model.UpdateProjectViewModel.ClientId = project.ClientId;
+            Model.UpdateProjectViewModel.UserId = project.UserId;
+            Model.UpdateProjectViewModel.StatusId = project.StatusId;
+            Model.UpdateProjectViewModel.Budget = project.Budget;
+            Model.UpdateProjectViewModel.StartDate = project.StartDate;
+            Model.UpdateProjectViewModel.EndDate = project.EndDate;
+
+
+
+            <div class="card project-card">
+                <div class="project-dropdown-header-container">
+                        <partial name="Partials/Dropdowns/_ProjectOptionsDropdown" model="Model.UpdateProjectViewModel" />
+                </div>
                 <div class="image">
                     @if (!string.IsNullOrEmpty(project.Image))
                     {
@@ -34,4 +54,6 @@
 
 
 <partial name="Partials/Components/Modals/_AddProjectModal" model="@Model.AddProjectViewModel" />
+
 <script src="~/js/addForms.js" asp-append-version="true"></script>
+<script src="~/js/handleProjects.js" asp-append-version="true"></script>

@@ -1,0 +1,38 @@
+﻿@model UpdateProjectViewModel
+
+@{
+
+}
+
+
+<div class="project-dropdown-container">
+    <div class="project-dropdown-button" data-type="dropdown" data-target="#project-dropdown-@Model.Id">
+        <img class="project-options-button-light" src="~/images/icons/more-icon.svg" alt="more project options" />
+        <img class="project-options-button-dark" src="~/images/icons/more-darkmode-icon.svg" alt="more project options darkmode" />
+
+    </div>
+    <div id="project-dropdown-@Model.Id" class="project-dropdown">
+        <div class="project-dropdown-options-container">
+            <div class="project-info" data-type="modal" data-target="#editProjectModal-@Model.Id">
+                <div class="label">
+                    <i class="fa-solid fa-pen"></i>
+                    <span>Edit</span>
+                </div>
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+            <div class="project-action" data-project-id="@Model.Id" onclick="handleDeleteProjectRequestFromElement(this)">
+                <div class="label">
+                    <i class="fa-duotone fa-solid fa-trash-can" style="--fa-primary-color: #ea5c39; --fa-primary-opacity: 1; --fa-secondary-color: #ea5c39; --fa-secondary-opacity: 0.4;"></i>
+                    <span>Delete</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<partial name="Partials/Components/Modals/_EditProjectModal" model="Model" />
