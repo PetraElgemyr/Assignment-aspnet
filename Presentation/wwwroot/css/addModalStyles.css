@@ -163,8 +163,18 @@ background-color: #00000036;
     padding: 1.2rem 1rem 1.2rem 1.5rem;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    width: 550px; 
+    width: 450px; 
 }
+
+
+    .card.member-card {
+        width: 100%;
+        margin: 1%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 
     .card .card-header {
         display: flex;
@@ -557,7 +567,7 @@ textarea,
 
 
 #projects .project.card .card-header {
-    position: relative;
+/*    position: relative;*/
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-template-areas: "img name action" "img client na";

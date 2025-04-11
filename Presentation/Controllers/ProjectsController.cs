@@ -90,6 +90,10 @@ public class ProjectsController(IProjectService projectService, IClientService c
 
         var addProjectFormData = model.MapTo<AddProjectFormData>();
         var result = await _projectService.CreateProjectAsync(addProjectFormData);
+
+        if (result.Succeeded)
+        {
+
          var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
         var userDislayName = await _userService.GetDisplayNameAsync(userId);
 
@@ -102,6 +106,8 @@ public class ProjectsController(IProjectService projectService, IClientService c
         };
 
         await _notificationService.AddNotificationAsync(notificationFormData);
+        } 
+
 
         return result.StatusCode switch
         {
@@ -144,6 +150,24 @@ public class ProjectsController(IProjectService projectService, IClientService c
         var updateProjectFormData = model.MapTo<UpdateProjectFormData>();
         var result = await _projectService.UpdateProjectAsync(updateProjectFormData);
 
+
+        if (result.Succeeded)
+        {
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+            var userDislayName = await _userService.GetDisplayNameAsync(userId);
+
+            var notificationFormData = new NotificationFormData
+            {
+                NotificationTypeId = 2, //projects
+                NotificationTargetId = 1, //all users
+                Message = $"Projektet {model.ProjectName} har uppdaterats av {userDislayName}",
+                Image = "/images/projects/project-template.svg" // TODO sätt rätt bild här, ej formfile utan omvandla till filename string kolla imgurl
+            };
+
+            await _notificationService.AddNotificationAsync(notificationFormData);
+        }
+
         return result.StatusCode switch
         {
             201 => Ok(),
@@ -171,16 +195,29 @@ public class ProjectsController(IProjectService projectService, IClientService c
             return BadRequest(new { errors });
         }
 
-
-
-
-        var projectExists = await _projectService.ProjectExists(id);
-        if (!projectExists)
+        var existingProjects = await _projectService.GetProjectAsync(id);
+        if (existingProjects.Result == null)
         {
             return BadRequest("Finns inget projekt att ta bort");
         }
 
         var result = await _projectService.DeleteProjectByIdAsync(id);
+
+        if (result.Succeeded)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+            var userDislayName = await _userService.GetDisplayNameAsync(userId);
+
+            var notificationFormData = new NotificationFormData
+            {
+                NotificationTypeId = 2, //projects
+                NotificationTargetId = 1, //all users
+                Message = $"Projektet {existingProjects.Result.ProjectName} tagits bort av {userDislayName}",
+                Image = "/images/projects/project-template.svg" // TODO sätt rätt bild här, ej formfile utan omvandla till filename string kolla imgurl
+            };
+
+            await _notificationService.AddNotificationAsync(notificationFormData);
+        }
 
         return result.StatusCode switch
         {
