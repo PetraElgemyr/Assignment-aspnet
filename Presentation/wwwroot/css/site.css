@@ -133,13 +133,13 @@
     /*project options dropdown */
     --project-dropdown-background-color: var(--white-100);
     --project-info-background-color: var(--white-200);
-
     /* dots */
     --dot-red-background-color: var(--red);
     --dot-yellow-background-color: var(--yellow);
     --dot-green-background-color: var(--green);
     /* modals */
     --modal-screen-background-color: #7070703b;
+    --jobtitle-background-color: var(--white-300);
     /*    --modal-background-color: var(--white-100);*/
 }
 
@@ -1621,7 +1621,7 @@ input:checked + .slider {
     }
 
     .member-card .jobtitle {
-        background-color: var(--white-300);
+        background-color: var(--jobtitle-background-color);
         padding: 0.5rem 1rem;
         border-radius: 10px;
         display: inline-block;

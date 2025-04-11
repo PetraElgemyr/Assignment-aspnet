@@ -23,21 +23,15 @@
                     <input asp-for="ProjectName" class="form-input" />
                     <span asp-validation-for="ProjectName"></span>
                 </div>
-               <div class="form-group">
-                    <label asp-for="ClientId" class="form-label">Client Name</label>
-                    <div class="form-select" data-placeholder="Choose a client">
-                        <button type="button" class="form-select-trigger">
-                            <span class="form-select-text"></span>
-                        </button>
-                        <ul class="form-select-options">
-                            @foreach (var option in Model.Clients)
-                            {
-                                    <li class="form-select-option" data-value="@option.Value">@option.Text</li>
-                            }
-                        </ul>
-                        <input type="hidden" asp-for="ClientId" />
-                    </div>
-                </div> 
+
+                <div class="form-group">
+                    <label asp-for="ClientId" class="form-label"></label>
+                    <select asp-for="ClientId" asp-items="Model.Clients" class="form-select">
+                        <option value="@Model.ClientId">Select a client</option> 
+                    </select>
+                    <span asp-validation-for="ClientId"></span>
+                </div>
+
                 <div class="form-group">
                     <label asp-for="Description" class="form-label"></label>
                     <div class="wysiwyg">
@@ -74,21 +68,23 @@
                         <input asp-for="EndDate" class="form-input" type="date" />
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label asp-for="UserId" class="form-label"></label>
-                    <div class="form-select" data-placeholder="Choose a member">
-                        <button type="button" class="form-select-trigger">
-                            <span class="form-select-text"></span>
-                        </button>
-                        <ul class="form-select-options">
-                            @foreach (var option in Model.Users)
-                            {
-                                    <li class="form-select-option" data-value="@option.Value">@option.Text</li>
-                            }
-                        </ul>
-                        <input type="hidden" asp-for="UserId" />
-                    </div>
+                    <select asp-for="UserId" asp-items="Model.Users" class="form-select">
+                        <option value="@Model.UserId">Select a user</option>
+                    </select>
+                    <span asp-validation-for="UserId"></span>
                 </div>
+
+                <div class="form-group">
+                    <label asp-for="StatusId" class="form-label"></label>
+                    <select asp-for="StatusId" asp-items="Model.Statuses" class="form-select">
+                        <option value="@Model.StatusId">Select a status</option>
+                    </select>
+                    <span asp-validation-for="StatusId"></span>
+                </div>
+             
                 <div class="form-group">
                     <label asp-for="Budget" class="form-label">Budget</label>
                     <div class="form-input-extended">
@@ -96,21 +92,7 @@
                         <input asp-for="Budget" class="form-input" type="text" />
                     </div>
                 </div>
-                <div class="form-group">
-                    <label asp-for="StatusId" class="form-label"></label>
-                    <div class="form-select" data-placeholder="Select a status">
-                        <button type="button" class="form-select-trigger">
-                            <span class="form-select-text"></span>
-                        </button>
-                        <ul class="form-select-options">
-                            @foreach (var option in Model.Statuses)
-                            {
-                                <li class="form-select-option" data-value="@option.Value">@option.Text</li>
-                            }
-                        </ul>
-                        <input type="hidden" asp-for="StatusId" />
-                    </div>
-                </div>
+              
                 <button type="submit" class="btn">Update</button>
             </form>
         </div>

@@ -135,6 +135,7 @@
     --modal-screen-background-color: #7070703b;
     --project-dropdown-background-color: var(--white-100);
     --project-info-background-color: var(--white-200);
+    --jobtitle-background-color: var(--white-300);
     /*    #28263b dark500*/
 }
 
@@ -202,6 +203,7 @@
     /*Project options*/
     --project-dropdown-background-color: var(--dark-100);
     --project-info-background-color: var(--dark-400);
+    --jobtitle-background-color: var(--dark-100);
 }
 
 

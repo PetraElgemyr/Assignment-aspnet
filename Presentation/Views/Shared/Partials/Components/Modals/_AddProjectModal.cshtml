@@ -26,20 +26,13 @@
                     @* </div> *@
                   
                 </div>
+
                 <div class="form-group">
-                    <label asp-for="ClientId" class="form-label">Client Name</label>
-                    <div class="form-select" data-placeholder="Choose a client">
-                        <button type="button" class="form-select-trigger">
-                            <span class="form-select-text"></span>
-                        </button>
-                        <ul class="form-select-options">
-                            @foreach (var option in Model.Clients)
-                            {
-                                <li class="form-select-option" data-value="@option.Value">@option.Text</li>
-                            }
-                        </ul>
-                        <input type="hidden" asp-for="ClientId" />
-                    </div>
+                    <label asp-for="ClientId" class="form-label"></label>
+                    <select asp-for="ClientId" asp-items="Model.Clients" class="form-select">
+                        <option value="@Model.ClientId">Select a client</option>
+                    </select>
+                    <span asp-validation-for="ClientId"></span>
                 </div>
 
                 <div class="form-group">
@@ -82,26 +75,18 @@
                     </div>
                 </div>
 
+
                 <div class="form-group">
                     <label asp-for="UserId" class="form-label"></label>
-                    <div class="form-select" data-placeholder="Choose a member">
-                        <button type="button" class="form-select-trigger">
-                            <span class="form-select-text"></span>
-                        </button>
-                        <ul class="form-select-options">
-                            @foreach (var option in Model.Users)
-                            {
-                                <li class="form-select-option" data-value="@option.Value">@option.Text</li>
-                            }
-                        </ul>
-                        <input type="hidden" asp-for="UserId" />
-                    </div>
+                    <select asp-for="UserId" asp-items="Model.Users" class="form-select">
+                        <option value="@Model.UserId">Select a user</option>
+                    </select>
+                    <span asp-validation-for="UserId"></span>
                 </div>
 
                 <div class="form-group">
                     <label asp-for="Budget" class="form-label">Budget</label>
                     <div class="form-input-extended">
-                        @* <i class="fa-duotone fa-solid fa-dollar-sign" ></i> *@
                         <i class="fa-duotone fa-solid fa-dollar-sign" style="--fa-primary-color: #1c2045; --fa-secondary-color: #1c2045;"></i>
                         <input asp-for="Budget" class="form-input" type="text" />
                     </div>
