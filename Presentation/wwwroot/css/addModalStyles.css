@@ -73,19 +73,6 @@
     --dot-red-text-color: var(--red);
     --dot-yellow-text-color: var(--yellow);
     --dot-green-text-color: var(--green);
-    /* badges */
-    --badge-red-text-color: var(--white-100);
-    --badge-red-border-color: var(--white-100);
-    --badge-red-background-color: var(--red);
-    --badge-danger-text-color: var(--red);
-    --badge-danger-border-color: var(--red-light);
-    --badge-danger-background-color: var(--red-light);
-    --badge-warning-text-color: var(--yellow-dark);
-    --badge-warning-border-color: var(--yellow-semilight);
-    --badge-warning-background-color: var(--yellow-semilight);
-    --badge-normal-text-color: var(--dark-400);
-    --badge-normal-border-color: var(--gray-100-opacity);
-    --badge-normal-background-color: var(--gray-100-opacity);
     /* button */
     --btn-text-color: var(--white-100);
     --btn-border-color: var(--white-100);

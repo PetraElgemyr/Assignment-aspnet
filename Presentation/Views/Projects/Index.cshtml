@@ -59,12 +59,12 @@
                                 </nav>
                                 <div class="divider"></div>
                                 <nav class="dropdown-actions">
-                                        <div class="project-action" data-project-id="@project.Id" onclick="handleDeleteProjectRequestFromElement(this)">
-                                            <div class="label">
-                                                <i class="fa-duotone fa-solid fa-trash-can" style="--fa-primary-color: #ea5c39; --fa-primary-opacity: 1; --fa-secondary-color: #ea5c39; --fa-secondary-opacity: 0.4;"></i>
-                                                <span>Delete</span>
-                                            </div>
+                                    <div class="project-action" data-project-id="@project.Id" onclick="handleDeleteProjectRequestFromElement(this)">
+                                        <div class="label">
+                                            <i class="fa-duotone fa-solid fa-trash-can" style="--fa-primary-color: #ea5c39; --fa-primary-opacity: 1; --fa-secondary-color: #ea5c39; --fa-secondary-opacity: 0.4;"></i>
+                                            <span>Delete</span>
                                         </div>
+                                    </div>
                                 </nav>
                             </div>
                         </div>
@@ -74,10 +74,55 @@
                     <p>@Html.Raw(project.Description)</p>
                 </div>
                 <div class="card-footer">
-                    <div class="badge badge-normal">
-                        <i class="fa-duotone fa-solid fa-clock"></i>
-                        <span>5 days left</span>
-                    </div>
+                    @{
+                        if (project.EndDate.HasValue)
+                        {
+                            var daysLeft = (project.EndDate.Value - DateTime.Now).Days;
+                            if (daysLeft > 1 && daysLeft < 7)
+                            {
+                                <div class="badge badge-warning">
+                                    <i class="fa-duotone fa-solid fa-clock"></i>
+                                    <span>@daysLeft days left</span>
+                                </div>
+                            }
+                            else if (daysLeft == 1)
+                            {
+                                <div class="badge badge-warning">
+                                    <i class="fa-duotone fa-solid fa-clock"></i>
+                                    <span>@daysLeft day left</span>
+                                </div>
+                            }
+                            else if (daysLeft == 0)
+                            {
+                                <div class="badge badge-red">
+                                    <i class="fa-duotone fa-solid fa-clock"></i>
+                                    <span>Ends today</span>
+                                </div>
+
+                            }
+                            else if (daysLeft < 0)
+                            {
+                                <div class="badge badge-completed">
+                                    <i class="fa-duotone fa-solid fa-clock"></i>
+                                    <span>Completed</span>
+                                </div>
+
+                            }
+                            else if (daysLeft > 7)
+                            
+                            {
+                                var weeksLeft = daysLeft / 7;
+                                var remainingDays = daysLeft % 7;
+
+                                <div class="badge badge-normal">
+                                    <i class="fa-duotone fa-solid fa-clock"></i>
+                                    <span>@weeksLeft weeks and @remainingDays days left</span>
+                                </div>
+
+                            }
+
+                        }
+                    }
                     <div class="members">
 
 
@@ -86,11 +131,12 @@
                             <div class="user-image">
                                 <img src="@project.User.Image" alt="Project member">
                             </div>
-                        } else
+                        }
+                        else
                         {
-                        <div class="user-image">
-                            <img src="/images/profiles/user-template-male-orange.svg" alt="template project">
-                        </div>
+                            <div class="user-image">
+                                <img src="/images/profiles/user-template-male-orange.svg" alt="template project">
+                            </div>
                         }
 
                     </div>

@@ -65,6 +65,19 @@
     --background-color: var(--white-200);
     --modal-background-color: var(--white-100);
     --orseperator-background-color: var(--white-100);
+    /* badges */
+    --badge-red-text-color: #ab2b20;
+    --badge-red-border-color: #ff664030;
+    --badge-red-background-color: #ff664030;
+    --badge-warning-text-color: ##5f510a;
+    --badge-warning-border-color: #ffebade3;
+    --badge-warning-background-color: #ffebade3;
+    --badge-normal-text-color: var(--dark-400);
+    --badge-normal-border-color: var(--gray-100-opacity);
+    --badge-normal-background-color: var(--gray-100-opacity);
+    --badge-completed-text-color: ##44651f;
+    --badge-completed-border-color: #ddfeb6b0;
+    --badge-completed-background-color: #ddfeb6b0;
     /* Knappar */
     --btn-text-color: var(--white-100);
     --btn-border-color: var(--white-100);
@@ -1641,8 +1654,34 @@ input:checked + .slider {
     align-items: center;
 }
 
-.badge.badge-normal {
-    background-color: var(--badge-normal-background-color);
-    border: 1px solid var(--badge-normal-border-color);
-    color: var(--badge-normal-text-color);
-}
+
+    .badge.badge-red {
+        background-color: var(--badge-red-background-color);
+        border: 1px solid var(--badge-red-border-color);
+        color: var(--badge-red-text-color);
+    }
+
+    .badge.badge-normal {
+        background-color: var(--badge-normal-background-color);
+        border: 1px solid var(--badge-normal-border-color);
+        color: var(--badge-normal-text-color);
+    }
+
+    .badge.badge-warning {
+        background-color: var(--badge-warning-background-color);
+        border: 1px solid var(--badge-warning-border-color);
+        color: var(--badge-warning-text-color);
+    }
+
+    .badge.badge-danger {
+        background-color: var(--badge-danger-background-color);
+        border: 1px solid var(--badge-danger-border-color);
+        color: var(--badge-danger-text-color);
+    }
+
+
+    .badge.badge-completed {
+        background-color: var(--badge-completed-background-color);
+        border: 1px solid var(--badge-completed-border-color);
+        color: var(--badge-completed-text-color);
+    }
