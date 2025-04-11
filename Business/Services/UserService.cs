@@ -21,12 +21,11 @@ public interface IUserService
     Task<UserResult> UserExistsByEmailAsync(string email);
 }
 
-public class UserService(IUserRepository userRepository, UserManager<UserEntity> userManager, RoleManager<IdentityRole> roleManager, IImageHandler imageHandler) : IUserService
+public class UserService(IUserRepository userRepository, UserManager<UserEntity> userManager, RoleManager<IdentityRole> roleManager) : IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly UserManager<UserEntity> _userManager = userManager;
     private readonly RoleManager<IdentityRole> _roleManager = roleManager;
-    private readonly IImageHandler _imageHandler = imageHandler;
 
     public async Task<UserResult<IEnumerable<User>>> GetUsersAsync()
     {
@@ -124,9 +123,6 @@ public class UserService(IUserRepository userRepository, UserManager<UserEntity>
         try
         {
             var userEntity = formData.MapTo<UserEntity>();
-
-            var imageFileName = await _imageHandler.SaveProfileImageAsync(formData.Image!);
-            userEntity.Image = imageFileName;
             userEntity.UserName = formData.Email;
 
             var result = await _userManager.CreateAsync(userEntity);

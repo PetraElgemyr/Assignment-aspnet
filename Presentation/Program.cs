@@ -8,14 +8,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 
+//if (builder.Environment.IsDevelopment())
+//{
+//    var localPath = Path.Combine(builder.Environment.WebRootPath, "images", "uploads");
+//    builder.Services.AddScoped<IImageHandler>(_ => new LocalImageHandler(localPath));
+//}
 
-// testa i dev om bildhantering funkar. 
-if (builder.Environment.IsDevelopment())
-{
-    var localPath = Path.Combine(builder.Environment.WebRootPath, "images", "uploads");
-    builder.Services.AddScoped<IImageHandler>(_ => new LocalImageHandler(localPath));
-}
-
+var connectionString = builder.Configuration.GetConnectionString("AzureBlobStorage");
+var containerName = "images";
+builder.Services.AddScoped<IAzureImageHandler>(_ => new AzureFileHandler(connectionString!, containerName));
 
 
 builder.Services.AddContexts(builder.Configuration.GetConnectionString("SqlConnection")!);

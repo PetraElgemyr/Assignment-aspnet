@@ -5,7 +5,7 @@ namespace Business.Models;
 
 public class AddProjectFormData
 {
-    public IFormFile? Image { get; set; }
+    public string? Image { get; set; }
     public string ProjectName { get; set; } = null!;
     public string? Description { get; set; }
 

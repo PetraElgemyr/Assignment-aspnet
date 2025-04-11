@@ -10,7 +10,7 @@
     @if (!string.IsNullOrEmpty(user!.Image))
     { // just nu hämta från inlagd bild i min images/profiles. 
         // Ej från upload då man inte kan lägga till bildfil än.
-        <img id="account-dropdown-button" data-type="dropdown" data-target="#account-dropdown" src="~/images/profiles/@user.Image" alt="User Avatar" class="account-avatar" />
+        <img id="account-dropdown-button" data-type="dropdown" data-target="#account-dropdown" src="@user.Image" alt="User Avatar" class="account-avatar" />
     }
     else
     {
@@ -23,7 +23,7 @@
             @if (!string.IsNullOrEmpty(user!.Image))
             { // just nu hämta från inlagd bild i min images/profiles.
                 // Ej från upload då man inte kan lägga till bildfil än.
-                <img id="account-dropdown-button" data-type="dropdown" data-target="#account-dropdown" src="~/images/profiles/@user.Image" alt="User Avatar" class="account-avatar" />
+                <img id="account-dropdown-button" data-type="dropdown" data-target="#account-dropdown" src="@user.Image" alt="User Avatar" class="account-avatar" />
             }
             else
             {

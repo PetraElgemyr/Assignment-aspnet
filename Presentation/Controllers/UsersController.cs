@@ -1,4 +1,5 @@
-﻿using Business.Models;
+﻿using Business.Handlers;
+using Business.Models;
 using Business.Services;
 using Domain.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -9,10 +10,11 @@ using System.Security.Claims;
 namespace Presentation.Controllers;
 
 [Authorize(Roles = "Admin")]
-public class UsersController(IUserService userService) : Controller
+public class UsersController(IUserService userService, IAzureImageHandler azureImageHandler) : Controller
 {
 
     private readonly IUserService _userService = userService;
+    private readonly IAzureImageHandler _azureImageHandler = azureImageHandler;
 
     [Route("admin/members")]
     public async Task<IActionResult> Index()
@@ -21,13 +23,13 @@ public class UsersController(IUserService userService) : Controller
 
         var userResults = await _userService.GetUsersAsync();
 
-      
-            var model = new MembersViewModel
-            {
-                Members = userResults.Result!,
-                AddUserViewModel = new AddUserViewModel()
-            };
-            return View(model);
+
+        var model = new MembersViewModel
+        {
+            Members = userResults.Result!,
+            AddUserViewModel = new AddUserViewModel()
+        };
+        return View(model);
     }
 
 
@@ -48,7 +50,10 @@ public class UsersController(IUserService userService) : Controller
 
             return BadRequest(new { errors });
         }
+
+        var imageUri = await _azureImageHandler.UploadFileAsync(model.Image!);
         var userFormData = model.MapTo<AddMemberFormData>();
+        userFormData.Image = imageUri;
 
         var result = await _userService.CreateMemberAsync(userFormData);
         if (result.Succeeded)
@@ -62,7 +67,7 @@ public class UsersController(IUserService userService) : Controller
                 NotificationTypeId = 1, //projects
                 NotificationTargetId = 2, //admin
                 Message = $"New member {model.FirstName} {model.FirstName} was added by {userDislayName}",
-                Image = result.Result?.Image != null ?  $"/images/uploads/{result.Result.Image}" : "/images/profiles/user-template.svg" // TODO sätt rätt bild här, ej formfile utan omvandla till filename string kolla imgurl
+                Image = !string.IsNullOrEmpty(imageUri) ? imageUri : "/images/profiles/user-template.svg" 
             };
         }
 

@@ -30,7 +30,7 @@
                     <div class="project-image">
                         @if (!string.IsNullOrEmpty(project.Image))
                         {
-                            <img src="~/images/uploads/@project.Image" alt="@project.ProjectName" />
+                            <img src="@project.Image" alt="@project.ProjectName" />
                         }
                         else
                         {

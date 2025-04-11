@@ -18,11 +18,9 @@ public interface IProjectService
     Task<ProjectResult<Project?>> UpdateProjectAsync(UpdateProjectFormData formData);
 }
 
-public class ProjectService(IProjectRepository projectRepository, IStatusService statusService, IImageHandler imageHandler) : IProjectService
+public class ProjectService(IProjectRepository projectRepository) : IProjectService
 {
     private readonly IProjectRepository _projectRepository = projectRepository;
-    private readonly IStatusService _statusService = statusService;
-    private readonly IImageHandler _imageHandler = imageHandler;
 
     public async Task<ProjectResult<Project?>> CreateProjectAsync(AddProjectFormData formData)
     {
@@ -30,14 +28,11 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
             return new ProjectResult<Project?> { Succeeded = false, StatusCode = 400, Error = "Invalid form data provided." };
 
         // TODO kolla om client, user och statusid finns
-        //projectEntity.Created = DateTime.Now; onödig????
         
         var projectEntity = formData.MapTo<ProjectEntity>();
-        // hårdkodad status till 1 tillfälligt. TODO kolla sen
         projectEntity.StatusId = 1;
         
-        var imageFileName = await _imageHandler.SaveProjectImageAsync(formData.Image!);
-        projectEntity.Image = imageFileName;
+     
 
         var result = await _projectRepository.AddAsync(projectEntity);
 
@@ -87,9 +82,7 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
 
         // TODO kolla om client, user och statusid finns
 
-        var imageFileName = await _imageHandler.SaveProjectImageAsync(formData.Image!);
         var projectModel = formData.MapTo<Project>();
-        projectModel.Image = imageFileName;
 
         var result = await _projectRepository.UpdateProjectFromModelAsync(projectModel);
 
@@ -110,7 +103,4 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
             new ProjectResult { Succeeded = true, StatusCode = 200 }
             : new ProjectResult { Succeeded = false, StatusCode = result.StatusCode, Error = result.Error };
     }
-
-
-
 }

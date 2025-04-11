@@ -1,4 +1,5 @@
-﻿using Business.Models;
+﻿using Business.Handlers;
+using Business.Models;
 using Business.Services;
 using Domain.Extensions;
 using Domain.Models;
@@ -11,7 +12,7 @@ using System.Security.Claims;
 namespace Presentation.Controllers;
 
 [Authorize]
-public class ProjectsController(IProjectService projectService, IClientService clientService, IStatusService statusService, IUserService userService, INotificationService notificationService) : Controller
+public class ProjectsController(IProjectService projectService, IClientService clientService, IStatusService statusService, IUserService userService, INotificationService notificationService, IAzureImageHandler azureImageHandler) : Controller
 {
 
     private readonly IProjectService _projectService = projectService;
@@ -19,6 +20,7 @@ public class ProjectsController(IProjectService projectService, IClientService c
     private readonly IStatusService _statusService = statusService;
     private readonly IUserService _userService = userService;
     private readonly INotificationService _notificationService = notificationService;
+    private readonly IAzureImageHandler _azureImageHandler = azureImageHandler;
 
     [Route("admin/projects")]
     public async Task<IActionResult> Index()
@@ -88,25 +90,29 @@ public class ProjectsController(IProjectService projectService, IClientService c
             return BadRequest(new { errors });
         }
 
+        var imageFileUri = await _azureImageHandler.UploadFileAsync(model.Image!);
+
         var addProjectFormData = model.MapTo<AddProjectFormData>();
+        addProjectFormData.Image = imageFileUri;
+
         var result = await _projectService.CreateProjectAsync(addProjectFormData);
 
         if (result.Succeeded)
         {
 
-         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
-        var userDislayName = await _userService.GetDisplayNameAsync(userId);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+            var userDislayName = await _userService.GetDisplayNameAsync(userId);
 
-        var notificationFormData = new NotificationFormData
-        {
-            NotificationTypeId = 2, //projects
-            NotificationTargetId = 1, //all users
-            Message = $"The project {model.ProjectName} was created by {userDislayName}",
-            Image = result.Result?.Image != null ? $"/images/uploads/{result.Result.Image}" : "/images/projects/project-template.svg"
-        };
+            var notificationFormData = new NotificationFormData
+            {
+                NotificationTypeId = 2, //projects
+                NotificationTargetId = 1, //all users
+                Message = $"The project {model.ProjectName} was created by {userDislayName}",
+                Image = !string.IsNullOrEmpty(imageFileUri) ? imageFileUri : "/images/projects/project-template.svg"
+            };
 
-        await _notificationService.AddNotificationAsync(notificationFormData);
-        } 
+            await _notificationService.AddNotificationAsync(notificationFormData);
+        }
 
 
         return result.StatusCode switch
@@ -147,7 +153,11 @@ public class ProjectsController(IProjectService projectService, IClientService c
             return NotFound(new { error = $"Project with id '{model.Id}' was not found." });
         }
 
+
+        var imageFileUri = await _azureImageHandler.UploadFileAsync(model.Image!);
         var updateProjectFormData = model.MapTo<UpdateProjectFormData>();
+        updateProjectFormData.Image = imageFileUri;
+
         var result = await _projectService.UpdateProjectAsync(updateProjectFormData);
 
 
@@ -162,7 +172,7 @@ public class ProjectsController(IProjectService projectService, IClientService c
                 NotificationTypeId = 2, //projects
                 NotificationTargetId = 1, //all users
                 Message = $"Project {model.ProjectName} was updated by {userDislayName}",
-                Image = result.Result!.Image != null ? $"/images/uploads/{result.Result.Image}" : "/images/projects/project-template.svg"
+                Image = !string.IsNullOrEmpty(imageFileUri) ? imageFileUri : "/images/projects/project-template.svg"
             };
 
             await _notificationService.AddNotificationAsync(notificationFormData);
@@ -213,7 +223,7 @@ public class ProjectsController(IProjectService projectService, IClientService c
                 NotificationTypeId = 2, //projects
                 NotificationTargetId = 1, //all users
                 Message = $"The project {existingProjects.Result.ProjectName} was deleted by {userDislayName}",
-                Image = "/images/projects/project-template.svg" 
+                Image = "/images/projects/project-template.svg"
             };
 
             await _notificationService.AddNotificationAsync(notificationFormData);
