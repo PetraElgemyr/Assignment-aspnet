@@ -4,6 +4,7 @@ using Domain.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models;
+using System.Security.Claims;
 
 namespace Presentation.Controllers;
 
@@ -50,6 +51,22 @@ public class UsersController(IUserService userService) : Controller
         var userFormData = model.MapTo<AddMemberFormData>();
 
         var result = await _userService.CreateMemberAsync(userFormData);
+        if (result.Succeeded)
+        {
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+            var userDislayName = await _userService.GetDisplayNameAsync(userId);
+
+            var notificationFormData = new NotificationFormData
+            {
+                NotificationTypeId = 1, //projects
+                NotificationTargetId = 2, //admin
+                Message = $"New member {model.FirstName} {model.FirstName} was added by {userDislayName}",
+                Image = result.Result?.Image != null ?  $"/images/uploads/{result.Result.Image}" : "/images/profiles/user-template.svg" // TODO sätt rätt bild här, ej formfile utan omvandla till filename string kolla imgurl
+            };
+        }
+
+
         return result.StatusCode switch
         {
             201 => Ok(),

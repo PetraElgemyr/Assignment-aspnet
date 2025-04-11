@@ -10,12 +10,12 @@ namespace Business.Services;
 
 public interface IProjectService
 {
-    Task<ProjectResult> CreateProjectAsync(AddProjectFormData formData);
+    Task<ProjectResult<Project?>> CreateProjectAsync(AddProjectFormData formData);
     Task<ProjectResult> DeleteProjectByIdAsync(string id);
     Task<ProjectResult<Project>> GetProjectAsync(string id);
     Task<ProjectResult<IEnumerable<Project>>> GetProjectsAsync();
     Task<bool> ProjectExists(string id);
-    Task<ProjectResult> UpdateProjectAsync(UpdateProjectFormData formData);
+    Task<ProjectResult<Project?>> UpdateProjectAsync(UpdateProjectFormData formData);
 }
 
 public class ProjectService(IProjectRepository projectRepository, IStatusService statusService, IImageHandler imageHandler) : IProjectService
@@ -24,10 +24,10 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
     private readonly IStatusService _statusService = statusService;
     private readonly IImageHandler _imageHandler = imageHandler;
 
-    public async Task<ProjectResult> CreateProjectAsync(AddProjectFormData formData)
+    public async Task<ProjectResult<Project?>> CreateProjectAsync(AddProjectFormData formData)
     {
         if (formData == null)
-            return new ProjectResult { Succeeded = false, StatusCode = 400, Error = "Invalid form data provided." };
+            return new ProjectResult<Project?> { Succeeded = false, StatusCode = 400, Error = "Invalid form data provided." };
 
         // TODO kolla om client, user och statusid finns
         //projectEntity.Created = DateTime.Now; onödig????
@@ -42,8 +42,8 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
         var result = await _projectRepository.AddAsync(projectEntity);
 
         return result.Succeeded ?
-            new ProjectResult { Succeeded = true, StatusCode = 201 }
-            : new ProjectResult { Succeeded = false, StatusCode = result.StatusCode, Error = result.Error };
+            new ProjectResult<Project?> { Succeeded = true, StatusCode = 201 , Result = result.Result}
+            : new ProjectResult<Project?> { Succeeded = false, StatusCode = result.StatusCode, Error = result.Error };
     }
 
     public async Task<ProjectResult<IEnumerable<Project>>> GetProjectsAsync()
@@ -80,10 +80,10 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
 
 
     // TODO update project
-    public async Task<ProjectResult> UpdateProjectAsync(UpdateProjectFormData formData)
+    public async Task<ProjectResult<Project?>> UpdateProjectAsync(UpdateProjectFormData formData)
     {
         if (formData == null)
-            return new ProjectResult { Succeeded = false, StatusCode = 400, Error = "Invalid form data provided." };
+            return new ProjectResult<Project?> { Succeeded = false, StatusCode = 400, Error = "Invalid form data provided." };
 
         // TODO kolla om client, user och statusid finns
 
@@ -94,8 +94,8 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
         var result = await _projectRepository.UpdateProjectFromModelAsync(projectModel);
 
         return result.Succeeded ?
-            new ProjectResult { Succeeded = true, StatusCode = 201 }
-            : new ProjectResult { Succeeded = false, StatusCode = result.StatusCode, Error = result.Error };
+            new ProjectResult<Project?> { Succeeded = true, StatusCode = 201, Result = result.Result }
+            : new ProjectResult<Project?> { Succeeded = false, StatusCode = result.StatusCode, Error = result.Error };
     }
 
     // TODO delete project

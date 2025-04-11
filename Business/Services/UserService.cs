@@ -13,7 +13,7 @@ namespace Business.Services;
 public interface IUserService
 {
     Task<UserResult> AddUserToRoleAsync(UserEntity user, string roleName);
-    Task<UserResult<User>> CreateMemberAsync(AddMemberFormData formData, string roleName = "User");
+    Task<UserResult<User?>> CreateMemberAsync(AddMemberFormData formData, string roleName = "User");
     Task<UserResult> CreateUserAsync(SignUpFormData formData, string roleName = "User");
     Task<string> GetDisplayNameAsync(string userId);
     Task<UserResult<User>> GetUserByIdAsync(string id);
@@ -111,14 +111,14 @@ public class UserService(IUserRepository userRepository, UserManager<UserEntity>
     }
 
 
-    public async Task<UserResult<User>> CreateMemberAsync(AddMemberFormData formData, string roleName = "User")
+    public async Task<UserResult<User?>> CreateMemberAsync(AddMemberFormData formData, string roleName = "User")
     {
         if (formData == null)
-            return new UserResult<User> { Succeeded = false, StatusCode = 400, Error = "Form data can't be null." };
+            return new UserResult<User?> { Succeeded = false, StatusCode = 400, Error = "Form data can't be null." };
 
         var exists = await _userRepository.ExistsAsync(x => x.Email == formData.Email);
         if (exists.Succeeded)
-            return new UserResult<User> { Succeeded = false, StatusCode = 409, Error = "User with same email already exists." };
+            return new UserResult<User?> { Succeeded = false, StatusCode = 409, Error = "User with same email already exists." };
 
 
         try
@@ -136,16 +136,16 @@ public class UserService(IUserRepository userRepository, UserManager<UserEntity>
                 var addToRoleResult = await AddUserToRoleAsync(userEntity, roleName);
 
                 return result.Succeeded ?
-                new UserResult<User> { Succeeded = true, StatusCode = 201 }
-                : new UserResult<User> { Succeeded = false, StatusCode = 201, Error = "User successfully created but not added to role." };
+                new UserResult<User?> { Succeeded = true, StatusCode = 201 }
+                : new UserResult<User?> { Succeeded = false, StatusCode = 201, Error = "User successfully created but not added to role." };
             }
 
-            return new UserResult<User> { Succeeded = false, StatusCode = 500, Error = "Unable to create user" };
+            return new UserResult<User?> { Succeeded = false, StatusCode = 500, Error = "Unable to create user" };
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);
-            return new UserResult<User> { Succeeded = false, StatusCode = 500, Error = ex.Message };
+            return new UserResult<User?> { Succeeded = false, StatusCode = 500, Error = ex.Message };
         }
 
     }

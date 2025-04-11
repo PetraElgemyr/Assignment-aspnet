@@ -12,7 +12,7 @@ namespace Data.Repositories;
 
 public interface IBaseRepository<TEntity, TModel> where TEntity : class
 {
-    Task<RepositoryResult> AddAsync(TEntity entity);
+    Task<RepositoryResult<TModel>> AddAsync(TEntity entity);
     Task<RepositoryResult> DeleteAsync(Expression<Func<TEntity, bool>> findBy);
     Task<RepositoryResult> ExistsAsync(Expression<Func<TEntity, bool>> findBy);
     Task<RepositoryResult<IEnumerable<TModel>>> GetAllAsync(bool orderByDescending = false, Expression<Func<TEntity, object>>? sortByColumn = null, Expression<Func<TEntity, bool>>? filterBy = null, int take = 0, params Expression<Func<TEntity, object>>[] includes);
@@ -105,21 +105,21 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
     }
 
 
-    public virtual async Task<RepositoryResult> AddAsync(TEntity entity)
+    public virtual async Task<RepositoryResult<TModel>> AddAsync(TEntity entity)
     {
         try
         {
             if (entity == null)
-                return new RepositoryResult { Succeeded = false, StatusCode = 400, Error = "Invalid properties" };
+                return new RepositoryResult<TModel> { Succeeded = false, StatusCode = 400, Error = "Invalid properties" };
 
             _table.Add(entity);
             await _context.SaveChangesAsync();
-            return new RepositoryResult { Succeeded = true, StatusCode = 201 };
+            return new RepositoryResult<TModel> { Succeeded = true, StatusCode = 201 };
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);
-            return new RepositoryResult { Succeeded = false, StatusCode = 500, Error = ex.Message };
+            return new RepositoryResult<TModel> { Succeeded = false, StatusCode = 500, Error = ex.Message };
         }
     }
 

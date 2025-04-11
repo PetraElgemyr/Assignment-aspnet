@@ -88,7 +88,7 @@ public class AuthController(IAuthService authService, INotificationService notif
                     NotificationTypeId = 1, // handlar om users, ej projekt
                     NotificationTargetId = 1, //här kan man hämta vilket id som är för admin eller ej ist för att hårdkoda 1
                     Message = $"{user.FirstName} {user.LastName} signed in",
-                    Image = !string.IsNullOrEmpty(user.Image) ? $"/images/profiles/{user.Image}" : "/images/profiles/user-template.svg"
+                    Image = !string.IsNullOrEmpty(user.Image) ? $"/images/uploads/{user.Image}" : "/images/profiles/user-template.svg"
                 };
                 await _notificationService.AddNotificationAsync(notificationFormData);
             }

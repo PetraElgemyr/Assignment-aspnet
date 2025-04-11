@@ -101,8 +101,8 @@ public class ProjectsController(IProjectService projectService, IClientService c
         {
             NotificationTypeId = 2, //projects
             NotificationTargetId = 1, //all users
-            Message = $"Nytt projekt {model.ProjectName} skapat av {userDislayName}",
-            Image = "/images/projects/project-template.svg" // TODO sätt rätt bild här, ej formfile utan omvandla till filename string kolla imgurl
+            Message = $"The project {model.ProjectName} was created by {userDislayName}",
+            Image = result.Result?.Image != null ? $"/images/uploads/{result.Result.Image}" : "/images/projects/project-template.svg"
         };
 
         await _notificationService.AddNotificationAsync(notificationFormData);
@@ -161,8 +161,8 @@ public class ProjectsController(IProjectService projectService, IClientService c
             {
                 NotificationTypeId = 2, //projects
                 NotificationTargetId = 1, //all users
-                Message = $"Projektet {model.ProjectName} har uppdaterats av {userDislayName}",
-                Image = "/images/projects/project-template.svg" // TODO sätt rätt bild här, ej formfile utan omvandla till filename string kolla imgurl
+                Message = $"Project {model.ProjectName} was updated by {userDislayName}",
+                Image = result.Result!.Image != null ? $"/images/uploads/{result.Result.Image}" : "/images/projects/project-template.svg"
             };
 
             await _notificationService.AddNotificationAsync(notificationFormData);
@@ -212,8 +212,8 @@ public class ProjectsController(IProjectService projectService, IClientService c
             {
                 NotificationTypeId = 2, //projects
                 NotificationTargetId = 1, //all users
-                Message = $"Projektet {existingProjects.Result.ProjectName} tagits bort av {userDislayName}",
-                Image = "/images/projects/project-template.svg" // TODO sätt rätt bild här, ej formfile utan omvandla till filename string kolla imgurl
+                Message = $"The project {existingProjects.Result.ProjectName} was deleted by {userDislayName}",
+                Image = "/images/projects/project-template.svg" 
             };
 
             await _notificationService.AddNotificationAsync(notificationFormData);
