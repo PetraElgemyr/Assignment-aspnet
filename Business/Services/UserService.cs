@@ -1,4 +1,5 @@
-﻿using Business.Models;
+﻿using Business.Handlers;
+using Business.Models;
 using Data.Entitites;
 using Data.Repositories;
 using Domain.Extensions;
@@ -12,6 +13,7 @@ namespace Business.Services;
 public interface IUserService
 {
     Task<UserResult> AddUserToRoleAsync(UserEntity user, string roleName);
+    Task<UserResult<User>> CreateMemberAsync(AddMemberFormData formData, string roleName = "User");
     Task<UserResult> CreateUserAsync(SignUpFormData formData, string roleName = "User");
     Task<string> GetDisplayNameAsync(string userId);
     Task<UserResult<User>> GetUserByIdAsync(string id);
@@ -19,12 +21,12 @@ public interface IUserService
     Task<UserResult> UserExistsByEmailAsync(string email);
 }
 
-public class UserService(IUserRepository userRepository, UserManager<UserEntity> userManager, RoleManager<IdentityRole> roleManager) : IUserService
+public class UserService(IUserRepository userRepository, UserManager<UserEntity> userManager, RoleManager<IdentityRole> roleManager, IImageHandler imageHandler) : IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly UserManager<UserEntity> _userManager = userManager;
     private readonly RoleManager<IdentityRole> _roleManager = roleManager;
-
+    private readonly IImageHandler _imageHandler = imageHandler;
 
     public async Task<UserResult<IEnumerable<User>>> GetUsersAsync()
     {
@@ -62,9 +64,9 @@ public class UserService(IUserRepository userRepository, UserManager<UserEntity>
         {
             var result = await _userManager.AddToRoleAsync(user, roleName);
             return result.Succeeded ? new UserResult { Succeeded = true, StatusCode = 200 } : new UserResult { Succeeded = false, StatusCode = 500, Error = "Unable to add user to role" };
-        } 
+        }
 
-            return new UserResult { Succeeded = false, StatusCode= 404 , Error="Role does not exist"};
+        return new UserResult { Succeeded = false, StatusCode = 404, Error = "Role does not exist" };
     }
 
     public async Task<string> GetDisplayNameAsync(string userId)
@@ -78,7 +80,7 @@ public class UserService(IUserRepository userRepository, UserManager<UserEntity>
 
     public async Task<UserResult> CreateUserAsync(SignUpFormData formData, string roleName = "User")
     {
-        if(formData == null)
+        if (formData == null)
             return new UserResult { Succeeded = false, StatusCode = 400, Error = "Form data can't be null." };
 
         var exists = await _userRepository.ExistsAsync(x => x.Email == formData.Email);
@@ -89,13 +91,13 @@ public class UserService(IUserRepository userRepository, UserManager<UserEntity>
             var userEntity = formData.MapTo<UserEntity>();
             userEntity.UserName = formData.Email;
             var result = await _userManager.CreateAsync(userEntity, formData.Password);
-            
+
             if (result.Succeeded)
             {
                 var addToRoleResult = await AddUserToRoleAsync(userEntity, roleName);
-                
-                return result.Succeeded ? 
-                new UserResult { Succeeded = true, StatusCode = 201 } 
+
+                return result.Succeeded ?
+                new UserResult { Succeeded = true, StatusCode = 201 }
             : new UserResult { Succeeded = false, StatusCode = 201, Error = "User successfully created but not added to role." };
             }
 
@@ -104,7 +106,46 @@ public class UserService(IUserRepository userRepository, UserManager<UserEntity>
         catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);
-            return new UserResult { Succeeded = false, StatusCode = 500, Error =ex.Message };
+            return new UserResult { Succeeded = false, StatusCode = 500, Error = ex.Message };
+        }
+    }
+
+
+    public async Task<UserResult<User>> CreateMemberAsync(AddMemberFormData formData, string roleName = "User")
+    {
+        if (formData == null)
+            return new UserResult<User> { Succeeded = false, StatusCode = 400, Error = "Form data can't be null." };
+
+        var exists = await _userRepository.ExistsAsync(x => x.Email == formData.Email);
+        if (exists.Succeeded)
+            return new UserResult<User> { Succeeded = false, StatusCode = 409, Error = "User with same email already exists." };
+
+
+        try
+        {
+            var userEntity = formData.MapTo<UserEntity>();
+
+            var imageFileName = await _imageHandler.SaveProfileImageAsync(formData.Image!);
+            userEntity.Image = imageFileName;
+            userEntity.UserName = formData.Email;
+
+            var result = await _userManager.CreateAsync(userEntity);
+
+            if (result.Succeeded)
+            {
+                var addToRoleResult = await AddUserToRoleAsync(userEntity, roleName);
+
+                return result.Succeeded ?
+                new UserResult<User> { Succeeded = true, StatusCode = 201 }
+                : new UserResult<User> { Succeeded = false, StatusCode = 201, Error = "User successfully created but not added to role." };
+            }
+
+            return new UserResult<User> { Succeeded = false, StatusCode = 500, Error = "Unable to create user" };
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+            return new UserResult<User> { Succeeded = false, StatusCode = 500, Error = ex.Message };
         }
 
     }

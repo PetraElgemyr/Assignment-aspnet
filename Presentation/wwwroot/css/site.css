@@ -1627,3 +1627,22 @@ input:checked + .slider {
         display: inline-block;
         margin-bottom: 2rem;
     }
+
+
+.badge {
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    font-size: 0.9em;
+    font-weight: 400;
+    font-style: normal;
+    font-family: var(--font-standard);
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.badge.badge-normal {
+    background-color: var(--badge-normal-background-color);
+    border: 1px solid var(--badge-normal-border-color);
+    color: var(--badge-normal-text-color);
+}

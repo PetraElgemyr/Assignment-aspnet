@@ -14,22 +14,31 @@
         @foreach (var member in Model.Members)
         {
             <div class="card member-card">
+
+             
+
                 <div class="image">
                     @if (!string.IsNullOrEmpty(member.Image))
                     {
-                        <img src="~/images/profiles/@member.Image" alt="" />
+                        <img src="~/images/uploads/@member.Image" alt="" />
                     }
                     else
                     {
                         <img src="~/images/profiles/user-template.svg" alt="user template" />
                     }
                 </div>
+
                 <h4 class="name">@member.FirstName @member.LastName</h4>
-                <div class="jobtitle">@member.JobTitle</div>
+                @if (!string.IsNullOrEmpty(member.JobTitle))
+                {
+                    <div class="jobtitle">@member.JobTitle</div>
+
+                }
                 <div class="email">@member.Email</div>
                 <div class="phone">@member.PhoneNumber</div>
-                <div class="role"></div>
             </div>
         }
     </div>
 </section>
+
+<partial name="Partials/Components/Modals/_AddUserModal" model="@Model.AddUserViewModel" />
