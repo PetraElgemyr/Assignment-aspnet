@@ -594,7 +594,29 @@ aside .btn-close {
         color: var(--btn-external-hover-text-color);
     }
 
+.btn-action {
+    transition: background-color 0.1s ease-in-out, border-color 0.1s ease-in-out, color 0.1s ease-in-out;
+    background-color: var(--btn-close-background-color);
+    border: 1px solid var(--btn-close-border-color);
+    color: var(--btn-close-text-color);
+    z-index: 999;
+    font-size: 1.4rem;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+    .btn-action:hover {
+        background-color: var(--btn-close-background-hover-color);
+        border: 1px solid var(--btn-close-border-hover-color);
+        color: var(--btn-close-text-hover-color);
+        text-decoration: none;
+    }
 
 
 
@@ -896,7 +918,7 @@ form label {
         }
 }
 
-div.projects {
+div#projects {
 /*    display: grid;
     grid-template-columns: auto auto auto;*/
     display:flex;
@@ -1295,9 +1317,9 @@ input:checked + .slider {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    padding: 10px;
-    margin: 0.5rem;
+    gap: 15px;
+    padding: 15px;
+    margin: 0;
     border-radius: 14px;
 }
 
@@ -1566,3 +1588,9 @@ input:checked + .slider {
     font-size: 0.9em;
 }
 
+
+/****************************** projektkort *****************/
+
+.show {
+    display: block !important;
+}

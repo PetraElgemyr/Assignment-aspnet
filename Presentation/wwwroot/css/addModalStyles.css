@@ -553,3 +553,187 @@ textarea,
     display: none;
 }
 
+
+
+
+#projects .project.card .card-header {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "img name action" "img client na";
+    align-items: center;
+    column-gap: 1rem;
+}
+
+    #projects .project.card .card-header .project-image {
+        grid-area: img;
+        width: 56px;
+        height: 56px;
+        overflow: hidden;
+        border-radius: var(--border-radius);
+    }
+
+        #projects .project.card .card-header .project-image img {
+            width: 56px;
+            height: 56px;
+            object-fit: contain;
+        }
+
+    #projects .project.card .card-header .project-name {
+        grid-area: name;
+    }
+
+    #projects .project.card .card-header .client-name {
+        grid-area: client;
+        color: var(--text-muted-color);
+    }
+
+    #projects .project.card .card-header .project-actions {
+        grid-area: action;
+    }
+
+#projects .project #project-actions-container {
+    position: relative;
+}
+
+#projects .project .dropdown {
+    box-shadow: 0 0 5px 2px rgba(137, 137, 137, 0.1);
+    width: 220px;
+    background-color: var(--white-100);
+}
+
+#projects .project .card-body {
+    margin: 0.5rem;
+    min-height: 100px;
+}
+
+#projects .project .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    #projects .project .card-footer .members {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+        #projects .project .card-footer .members .user-image {
+            grid-area: img;
+            width: 30px;
+            height: 30px;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+        }
+
+            #projects .project .card-footer .members .user-image img {
+                width: 30px;
+                height: 30px;
+                object-fit: contain;
+            }
+
+
+.dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 110%;
+    background-color: var(--dropdown-background-color);
+    border: 1px solid var(--dropdown-border-color);
+    color: var(--dropdown-text-color);
+    padding: 0.8rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+    .dropdown .dropdown-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .dropdown .divider {
+        margin: 1rem 0;
+    }
+
+    .dropdown .dropdown-options {
+        display: grid;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+        .dropdown .dropdown-options .dropdown-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+
+    .dropdown .dropdown-actions {
+        display: grid;
+        gap: 0.5rem;
+    }
+
+        .dropdown .dropdown-actions .dropdown-action {
+            transition: background-color 0.1s ease-in-out, border-color 0.1s ease-in-out, color 0.1s ease-in-out;
+            background-color: var(--navlink-background-color);
+            border: 1px solid var(--navlink-border-color);
+            color: var(--navlink-text-color);
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            padding: 1rem 1.5rem;
+            font-size: 1em;
+            font-family: var(--font-standard);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+            .dropdown .dropdown-actions .dropdown-action:hover {
+                background-color: var(--navlink-background-hover-color);
+                border-color: var(--navlink-border-hover-color);
+                color: var(--navlink-text-hover-color);
+                text-decoration: none;
+            }
+
+
+
+    .dropdown.dropdown-show {
+        display: block;
+    }
+
+.remove {
+    color: var(--red) !important;
+}
+
+
+.btn-close,
+.btn-remove {
+    transition: background-color 0.1s ease-in-out, border-color 0.1s ease-in-out, color 0.1s ease-in-out;
+    background-color: var(--btn-close-background-color);
+    border: 1px solid var(--btn-close-border-color);
+    color: var(--btn-close-text-color);
+    z-index: 999;
+    font-size: 1.4rem;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    height: 40px;
+    width: 40px;
+}
+
+    .btn-close::before,
+    .btn-remove::before {
+        content: '\f00d';
+        font-family: var(--font-fontawesome-pro);
+    }
+
+    .btn-close:hover,
+    .btn-remove:hover {
+        background-color: var(--btn-close-background-hover-color);
+        border: 1px solid var(--btn-close-border-hover-color);
+        color: var(--btn-close-text-hover-color);
+        text-decoration: none;
+    }

@@ -1,21 +1,24 @@
 ﻿using Business.Models;
 using Business.Services;
 using Domain.Extensions;
+using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Presentation.Models;
+using System.Security.Claims;
 
 namespace Presentation.Controllers;
 
 [Authorize]
-public class ProjectsController(IProjectService projectService, IClientService clientService, IStatusService statusService, IUserService userService) : Controller
+public class ProjectsController(IProjectService projectService, IClientService clientService, IStatusService statusService, IUserService userService, INotificationService notificationService) : Controller
 {
 
     private readonly IProjectService _projectService = projectService;
     private readonly IClientService _clientService = clientService;
     private readonly IStatusService _statusService = statusService;
     private readonly IUserService _userService = userService;
+    private readonly INotificationService _notificationService = notificationService;
 
     [Route("admin/projects")]
     public async Task<IActionResult> Index()
@@ -84,9 +87,22 @@ public class ProjectsController(IProjectService projectService, IClientService c
                 );
             return BadRequest(new { errors });
         }
-        
+
         var addProjectFormData = model.MapTo<AddProjectFormData>();
         var result = await _projectService.CreateProjectAsync(addProjectFormData);
+         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+        var userDislayName = await _userService.GetDisplayNameAsync(userId);
+
+        var notificationFormData = new NotificationFormData
+        {
+            NotificationTypeId = 2, //projects
+            NotificationTargetId = 1, //all users
+            Message = $"Nytt projekt {model.ProjectName} skapat av {userDislayName}",
+            Image = "/images/projects/project-template.svg" // TODO sätt rätt bild här, ej formfile utan omvandla till filename string kolla imgurl
+        };
+
+        await _notificationService.AddNotificationAsync(notificationFormData);
+
         return result.StatusCode switch
         {
             201 => Ok(),
@@ -94,8 +110,6 @@ public class ProjectsController(IProjectService projectService, IClientService c
             409 => Conflict(),
             _ => Problem(),
         };
-     
-
 
     }
     #endregion
@@ -166,15 +180,15 @@ public class ProjectsController(IProjectService projectService, IClientService c
             return BadRequest("Finns inget projekt att ta bort");
         }
 
-        var result = await  _projectService.DeleteProjectByIdAsync(id);
+        var result = await _projectService.DeleteProjectByIdAsync(id);
 
-          return result.StatusCode switch
-            {
-                200 => Ok(),
-                400 => BadRequest(result.Error),
-                409 => Conflict(),
-                _ => Problem(),
-            };
+        return result.StatusCode switch
+        {
+            200 => Ok(),
+            400 => BadRequest(result.Error),
+            409 => Conflict(),
+            _ => Problem(),
+        };
     }
 
 

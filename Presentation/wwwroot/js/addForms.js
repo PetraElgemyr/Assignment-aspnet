@@ -1,6 +1,5 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
     initForms();
-    //initUpdateForms();
 })
 
 function initForms() {
@@ -151,5 +150,4 @@ function closeFormModal(modal) {
         })
     }
 }
-
 

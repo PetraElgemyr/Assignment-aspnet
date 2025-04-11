@@ -96,6 +96,7 @@ function initializeDropdowns() {
     dropdownTriggers.forEach(trigger => {
         trigger.addEventListener('click', (e) => {
             e.stopPropagation()
+            console.log("klickat")
             const targetSelector = trigger.getAttribute('data-target')
             if (!targetSelector) return
             const dropdown = document.querySelector(targetSelector)
@@ -103,6 +104,7 @@ function initializeDropdowns() {
 
             closeAllDropdowns(dropdown, dropdownElements)
             dropdown.classList.toggle('show')
+            console.log(dropdown, "klickad")
         })
     })
 

@@ -6,16 +6,14 @@
 
 }
 
-<section id="projects">
+<section id="projects-section-container">
     <div class="section-header">
         <h1>@ViewData["Title"]</h1>
         <button type="button" data-type="modal" data-target="#addProjectModal" class="btn btn-add"><span>Add Project</span></button>
     </div>
-    <div class="projects">
+    <div id="projects">
         @foreach (var project in Model.Projects)
         {
-
-
             Model.UpdateProjectViewModel.Id = project.Id;
             Model.UpdateProjectViewModel.ProjectName = project.ProjectName;
             Model.UpdateProjectViewModel.Description = project.Description;
@@ -26,10 +24,7 @@
             Model.UpdateProjectViewModel.Budget = project.Budget;
             Model.UpdateProjectViewModel.StartDate = project.StartDate;
             Model.UpdateProjectViewModel.EndDate = project.EndDate;
-
-
-
-            <div class="card project-card">
+            @*  <div class="card project-card">
                 <div class="project-dropdown-header-container">
                         <partial name="Partials/Dropdowns/_ProjectOptionsDropdown" model="Model.UpdateProjectViewModel" />
                 </div>
@@ -46,7 +41,84 @@
                 <h4 class="name">@project.ProjectName</h4>
                 <div>@project.Client.ClientName</div>
                 <div class="">@project.Budget sek</div>
+            </div> *@
+
+            /************************/
+
+            <div class="project card" data-project-id="@project.Id">
+                <div class="card-header">
+                    <div class="project-image">
+                        @if (!string.IsNullOrEmpty(project.Image))
+                        {
+                            <img src="~/images/uploads/@project.Image" alt="@project.ProjectName" />
+                        }
+                        else
+                        {
+                            <img src="~/images/projects/project-template.svg" alt="default-project-template" />
+                        }
+                    </div>
+                    <h6 class="project-name">@project.ProjectName</h6>
+                    <span class="client-name">@project.Client.ClientName</span>
+
+
+                    <div id="project-actions-container">
+                        <button type="button" data-type="dropdown" data-target="#project-dropdown-@project.Id" class="btn-action">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+                        <div id="project-dropdown-@project.Id" class="dropdown">
+                            <div class="dropdown-body">
+                                <nav class="dropdown-actions">
+                                    <button data-type="modal" data-target="#editProjectModal-@project.Id" class="dropdown-action">
+                                        <i class="fa-duotone fa-solid fa-pen-to-square"></i>
+                                        <span>Edit</span>
+                                    </button>
+                                    <button class="dropdown-action" href="#">
+                                        <i class="fa-duotone fa-solid fa-user-plus" style="--fa-primary-opacity: 0.4; --fa-secondary-opacity: 1;"></i>
+                                        <span>Add Member</span>
+                                    </button>
+                                </nav>
+                                <div class="divider"></div>
+                                <nav class="dropdown-actions">
+                                        <div class="project-action" data-project-id="@project.Id" onclick="handleDeleteProjectRequestFromElement(this)">
+                                            <div class="label">
+                                                <i class="fa-duotone fa-solid fa-trash-can" style="--fa-primary-color: #ea5c39; --fa-primary-opacity: 1; --fa-secondary-color: #ea5c39; --fa-secondary-opacity: 0.4;"></i>
+                                                <span>Delete</span>
+                                            </div>
+                                        </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>@Html.Raw(project.Description)</p>
+                </div>
+                <div class="card-footer">
+                    <div class="badge badge-normal">
+                        <i class="fa-duotone fa-solid fa-clock"></i>
+                        <span>5 days left</span>
+                    </div>
+                    <div class="members">
+
+
+                        @if (!string.IsNullOrEmpty(project.User.Image))
+                        {
+                            <div class="user-image">
+                                <img src="/images/uploads/@project.User.Image" alt="Project member">
+                            </div>
+                        } else
+                        {
+                        <div class="user-image">
+                            <img src="/images/profiles/user-template-male-orange.svg" alt="template project">
+                        </div>
+                        }
+
+                    </div>
+                </div>
             </div>
+
+            <partial name="Partials/Components/Modals/_EditProjectModal" model="Model.UpdateProjectViewModel" />
+
         }
 
     </div>
