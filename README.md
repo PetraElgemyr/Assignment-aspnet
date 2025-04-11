@@ -3,12 +3,15 @@ A fullstack project with MVC designpattern in ASP.NET. My first time coding with
 Link [here](https://petraelgemyr-aspnet-webapp.azurewebsites.net/auth/login?ReturnUrl=%2Fadmin%2Foverview)
 
 ## Tools & Techniques
-- Asp.NET
+- ASP.NET
 - C#
 - Razor Views
+- HTML
+- CSS
 - Azure Blob Storage
 - Identity
 - SignalR
+- JavaScript
 
 ## Functions
 The application is built in C# with ASP.NET MVC. I try to use partial views, viewmodels and place my files and my logic in the right places. Some functions in the application:
@@ -17,4 +20,5 @@ The application is built in C# with ASP.NET MVC. I try to use partial views, vie
 - Blob file upload to Azure
 - Middleware with default roles and admin user
 - CRUD for projects (some for users and clients)
+
 
